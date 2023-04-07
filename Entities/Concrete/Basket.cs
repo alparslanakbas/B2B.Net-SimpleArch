@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Entities.Concrete
+{
+    public class Basket
+    {
+        public int Id { get; set; }
+        public int CustormerId { get; set; }
+        public int ProductId { get; set; }
+        public decimal Quantity { get; set; }
+        public decimal Price { get; set; }
+    }
+}
