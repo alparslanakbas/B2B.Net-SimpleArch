@@ -26,35 +26,40 @@ namespace Business.Repositories.PriceListDetailRepository
             _priceListDetailDal = priceListDetailDal;
         }
 
+        
+        // Fiyat Listesi Detay Ekle
         [SecuredAspect()]
         [ValidationAspect(typeof(PriceListDetailValidator))]
         [RemoveCacheAspect("IPriceListDetailService.Get")]
-
         public async Task<IResult> Add(PriceListDetail priceListDetail)
         {
             await _priceListDetailDal.Add(priceListDetail);
             return new SuccessResult(PriceListDetailMessages.Added);
         }
+        //****************************************//
 
+        // Fiyat Listesi Detay Güncelle
         [SecuredAspect()]
         [ValidationAspect(typeof(PriceListDetailValidator))]
         [RemoveCacheAspect("IPriceListDetailService.Get")]
-
         public async Task<IResult> Update(PriceListDetail priceListDetail)
         {
             await _priceListDetailDal.Update(priceListDetail);
             return new SuccessResult(PriceListDetailMessages.Updated);
         }
+        //****************************************//
 
+        // Fiyat Listesi Detay Sil
         [SecuredAspect()]
         [RemoveCacheAspect("IPriceListDetailService.Get")]
-
         public async Task<IResult> Delete(PriceListDetail priceListDetail)
         {
             await _priceListDetailDal.Delete(priceListDetail);
             return new SuccessResult(PriceListDetailMessages.Deleted);
         }
+        //****************************************//
 
+        // Fiyat Listelerinin Detaylarýný Listele
         [SecuredAspect()]
         [CacheAspect()]
         [PerformanceAspect()]
@@ -62,12 +67,14 @@ namespace Business.Repositories.PriceListDetailRepository
         {
             return new SuccessDataResult<List<PriceListDetail>>(await _priceListDetailDal.GetAll());
         }
+        //****************************************//
 
+        // Fiyat Listelerinin Detaylarýný Id'ye Göre Listele
         [SecuredAspect()]
         public async Task<IDataResult<PriceListDetail>> GetById(int id)
         {
             return new SuccessDataResult<PriceListDetail>(await _priceListDetailDal.Get(p => p.Id == id));
         }
-
+        //****************************************//
     }
 }

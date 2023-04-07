@@ -21,6 +21,8 @@ namespace Business.Repositories.EmailParameterRepository
             _emailParameterDal = emailParameterDal;
         }
 
+
+        // Mail Parametresi Ekle
         [SecuredAspect()]
         [ValidationAspect(typeof(EmailParameterValidator))]
         [RemoveCacheAspect("IEmailParameterService.Get")]
@@ -30,7 +32,20 @@ namespace Business.Repositories.EmailParameterRepository
             return new SuccessResult(EmailParameterMessages.AddedEmailParameter);
 
         }
+        //****************************************//
 
+        // Mail Parametresini Güncelle
+        [SecuredAspect()]
+        [ValidationAspect(typeof(EmailParameterValidator))]
+        [RemoveCacheAspect("IEmailParameterService.Get")]
+        public async Task<IResult> Update(EmailParameter emailParameter)
+        {
+            await _emailParameterDal.Update(emailParameter);
+            return new SuccessResult(EmailParameterMessages.UpdatedEmailParameter);
+        }
+        //****************************************//
+
+        // Mail Parametresi Sil
         [SecuredAspect()]
         [RemoveCacheAspect("IEmailParameterService.Get")]
         public async Task<IResult> Delete(EmailParameter emailParameter)
@@ -38,23 +53,31 @@ namespace Business.Repositories.EmailParameterRepository
             await _emailParameterDal.Delete(emailParameter);
             return new SuccessResult(EmailParameterMessages.DeletedEmailParameter);
         }
+        //****************************************//
 
+        // Mail Parametresi Getir Id'ye Göre
         public async Task<IDataResult<EmailParameter>> GetById(int id)
         {
             return new SuccessDataResult<EmailParameter>(await _emailParameterDal.Get(p => p.Id == id));
         }
+        //****************************************//
 
+        // Mail Parametresi İlk Kaydı Getir
         public async Task<EmailParameter> GetFirst()
         {
             return await _emailParameterDal.GetFirst();
         }
+        //****************************************//
 
+        // Mail Parametlerini Listele
         [CacheAspect()]
         public async Task<IDataResult<List<EmailParameter>>> GetList()
         {
             return new SuccessDataResult<List<EmailParameter>>(await _emailParameterDal.GetAll());
         }
+        //****************************************//
 
+        // Mail Gönder
         public async Task<IResult> SendEmail(EmailParameter emailParameter, string body, string subject, string emails)
         {
             using (MailMessage mail = new MailMessage())
@@ -81,14 +104,8 @@ namespace Business.Repositories.EmailParameterRepository
             return new SuccessResult(EmailParameterMessages.EmailSendSuccesiful);
 
         }
+        //****************************************//
 
-        [SecuredAspect()]
-        [ValidationAspect(typeof(EmailParameterValidator))]
-        [RemoveCacheAspect("IEmailParameterService.Get")]
-        public async Task<IResult> Update(EmailParameter emailParameter)
-        {
-            await _emailParameterDal.Update(emailParameter);
-            return new SuccessResult(EmailParameterMessages.UpdatedEmailParameter);
-        }
+
     }
 }

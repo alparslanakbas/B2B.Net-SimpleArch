@@ -2,11 +2,11 @@
 {
     public class UserOperationClaimMessages
     {
-        public static string Added = "Yetki ataması başarıyla oluşturuldu";
-        public static string Updated = "Yetki ataması başarıyla güncellendi";
-        public static string Deleted = "Yetki ataması başarıyla silindi";
-        public static string OperationClaimSetExist = "Bu kullanıcıya bu yetki daha önce atanmış!";
-        public static string OperationClaimNotExist = "Seçtiğiniz yetki bilgisi yetkilerde bulunmuyor!";
-        public static string UserNotExist = "Seçtiğiniz kullanıcı bulunamadı!";
+        public static string Added = "Yetki Ataması Başarıyla Oluşturuldu.!";
+        public static string Updated = "Yetki Ataması Başarıyla Güncellendi.!";
+        public static string Deleted = "Yetki Ataması Başarıyla Silindi.!";
+        public static string OperationClaimSetExist = "Bu Kullanıcıya Bu Yetki Daha Önce Atanmış.!";
+        public static string OperationClaimNotExist = "Seçtiğiniz Yetki Bilgisi Yetkilerde Bulunmuyor.!";
+        public static string UserNotExist = "Seçtiğiniz Kullanıcı Bulunamadı.!";
     }
 }

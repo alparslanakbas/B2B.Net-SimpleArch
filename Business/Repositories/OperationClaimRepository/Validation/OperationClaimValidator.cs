@@ -7,7 +7,7 @@ namespace Business.Repositories.OperationClaimRepository.Validation
     {
         public OperationClaimValidator()
         {
-            RuleFor(p => p.Name).NotEmpty().WithMessage("Yetki adı boş olamaz");
+            RuleFor(p => p.Name).NotEmpty().WithMessage("Yetki Adı Boş Olamaz.!");
         }
     }
 }

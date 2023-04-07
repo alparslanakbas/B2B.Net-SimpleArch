@@ -26,35 +26,40 @@ namespace Business.Repositories.CustomerRepository
             _customerDal = customerDal;
         }
 
+
+        // Müþteri Ekle
         [SecuredAspect()]
         [ValidationAspect(typeof(CustomerValidator))]
         [RemoveCacheAspect("ICustomerService.Get")]
-
         public async Task<IResult> Add(Customer customer)
         {
             await _customerDal.Add(customer);
             return new SuccessResult(CustomerMessages.Added);
         }
+        //****************************************//
 
+        // Müþteri Güncelle
         [SecuredAspect()]
         [ValidationAspect(typeof(CustomerValidator))]
         [RemoveCacheAspect("ICustomerService.Get")]
-
         public async Task<IResult> Update(Customer customer)
         {
             await _customerDal.Update(customer);
             return new SuccessResult(CustomerMessages.Updated);
         }
+        //****************************************//
 
+        // Müþteri Sil
         [SecuredAspect()]
         [RemoveCacheAspect("ICustomerService.Get")]
-
         public async Task<IResult> Delete(Customer customer)
         {
             await _customerDal.Delete(customer);
             return new SuccessResult(CustomerMessages.Deleted);
         }
+        //****************************************//
 
+        // Müþterileri Listele
         [SecuredAspect()]
         [CacheAspect()]
         [PerformanceAspect()]
@@ -62,12 +67,14 @@ namespace Business.Repositories.CustomerRepository
         {
             return new SuccessDataResult<List<Customer>>(await _customerDal.GetAll());
         }
+        //****************************************//
 
+        // Müþterileri Id'ye Göre Getir
         [SecuredAspect()]
         public async Task<IDataResult<Customer>> GetById(int id)
         {
             return new SuccessDataResult<Customer>(await _customerDal.Get(p => p.Id == id));
         }
-
+        //****************************************//
     }
 }

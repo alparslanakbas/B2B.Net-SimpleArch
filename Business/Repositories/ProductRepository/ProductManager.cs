@@ -26,35 +26,40 @@ namespace Business.Repositories.ProductRepository
             _productDal = productDal;
         }
 
+
+        // Ürün Ekle
         [SecuredAspect()]
         [ValidationAspect(typeof(ProductValidator))]
         [RemoveCacheAspect("IProductService.Get")]
-
         public async Task<IResult> Add(Product product)
         {
             await _productDal.Add(product);
             return new SuccessResult(ProductMessages.Added);
         }
+        //****************************************//
 
+        // Ürün Güncelle
         [SecuredAspect()]
         [ValidationAspect(typeof(ProductValidator))]
         [RemoveCacheAspect("IProductService.Get")]
-
         public async Task<IResult> Update(Product product)
         {
             await _productDal.Update(product);
             return new SuccessResult(ProductMessages.Updated);
         }
+        //****************************************//
 
+        // Ürün Sil
         [SecuredAspect()]
         [RemoveCacheAspect("IProductService.Get")]
-
         public async Task<IResult> Delete(Product product)
         {
             await _productDal.Delete(product);
             return new SuccessResult(ProductMessages.Deleted);
         }
+        //****************************************//
 
+        // Ürünleri Listele
         [SecuredAspect()]
         [CacheAspect()]
         [PerformanceAspect()]
@@ -62,12 +67,14 @@ namespace Business.Repositories.ProductRepository
         {
             return new SuccessDataResult<List<Product>>(await _productDal.GetAll());
         }
+        //****************************************//
 
+        // Ürünleri Id'ye Göre Listele
         [SecuredAspect()]
         public async Task<IDataResult<Product>> GetById(int id)
         {
             return new SuccessDataResult<Product>(await _productDal.Get(p => p.Id == id));
         }
-
+        //****************************************//
     }
 }

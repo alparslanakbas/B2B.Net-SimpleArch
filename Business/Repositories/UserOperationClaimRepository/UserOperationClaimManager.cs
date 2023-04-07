@@ -25,39 +25,7 @@ namespace Business.Repositories.UserOperationClaimRepository
         }
 
 
-        public async Task<IResult> Delete(UserOperationClaim userOperationClaim)
-        {
-            await _userOperationClaimDal.Delete(userOperationClaim);
-            return new SuccessResult(UserOperationClaimMessages.Deleted);
-        }
-
-        public async Task<IDataResult<UserOperationClaim>> GetById(int id)
-        {
-            return new SuccessDataResult<UserOperationClaim>(await _userOperationClaimDal.Get(p => p.Id == id));
-        }
-
-        public async Task<IDataResult<List<UserOperationClaim>>> GetList()
-        {
-            return new SuccessDataResult<List<UserOperationClaim>>(await _userOperationClaimDal.GetAll());
-        }
-
-        [ValidationAspect(typeof(UserOperationClaimValidator))]
-        public async Task<IResult> Update(UserOperationClaim userOperationClaim)
-        {
-            IResult result = BusinessRules.Run(
-                await IsUserExist(userOperationClaim.UserId),
-                await IsOperationClaimExist(userOperationClaim.OperationClaimId),
-                await IsOperationSetExistForUpdate(userOperationClaim)
-                );
-            if (result != null)
-            {
-                return result;
-            }
-
-            await _userOperationClaimDal.Update(userOperationClaim);
-            return new SuccessResult(UserOperationClaimMessages.Updated);
-        }
-
+        // Kullanıcıya Yetki Ekle
         [ValidationAspect(typeof(UserOperationClaimValidator))]
         public async Task<IResult> Add(UserOperationClaim userOperationClaim)
         {
@@ -74,7 +42,50 @@ namespace Business.Repositories.UserOperationClaimRepository
             await _userOperationClaimDal.Add(userOperationClaim);
             return new SuccessResult(UserOperationClaimMessages.Added);
         }
+        //****************************************//
 
+        // Kullanıcının Yetkisini Güncelle
+        [ValidationAspect(typeof(UserOperationClaimValidator))]
+        public async Task<IResult> Update(UserOperationClaim userOperationClaim)
+        {
+            IResult result = BusinessRules.Run(
+                await IsUserExist(userOperationClaim.UserId),
+                await IsOperationClaimExist(userOperationClaim.OperationClaimId),
+                await IsOperationSetExistForUpdate(userOperationClaim)
+                );
+            if (result != null)
+            {
+                return result;
+            }
+
+            await _userOperationClaimDal.Update(userOperationClaim);
+            return new SuccessResult(UserOperationClaimMessages.Updated);
+        }
+        //****************************************//
+
+        // Kullanıcının Yetkisini Sil
+        public async Task<IResult> Delete(UserOperationClaim userOperationClaim)
+        {
+            await _userOperationClaimDal.Delete(userOperationClaim);
+            return new SuccessResult(UserOperationClaimMessages.Deleted);
+        }
+        //****************************************//
+
+        // Kullanıcının Yetkisini Id'ye Göre Getir
+        public async Task<IDataResult<UserOperationClaim>> GetById(int id)
+        {
+            return new SuccessDataResult<UserOperationClaim>(await _userOperationClaimDal.Get(p => p.Id == id));
+        }
+        //****************************************//
+
+        // Kullanıcının Yetkilerini Listele
+        public async Task<IDataResult<List<UserOperationClaim>>> GetList()
+        {
+            return new SuccessDataResult<List<UserOperationClaim>>(await _userOperationClaimDal.GetAll());
+        }
+        //****************************************//
+
+        // Kullanıcının Tekrar Var Olup Olmadığını Kontrol Eder
         public async Task<IResult> IsUserExist(int userId)
         {
             var result = await _userService.GetByIdForAuth(userId);
@@ -84,7 +95,9 @@ namespace Business.Repositories.UserOperationClaimRepository
             }
             return new SuccessResult();
         }
+        //****************************************//
 
+        // Kullanıcının Aynı İzne Sahip Olup Olmadığını Kontrol Eder
         public async Task<IResult> IsOperationClaimExist(int operationClaimId)
         {
             var result = await _operationClaimService.GetByIdForUserService(operationClaimId);
@@ -94,7 +107,9 @@ namespace Business.Repositories.UserOperationClaimRepository
             }
             return new SuccessResult();
         }
+        //****************************************//
 
+        // Kullanıcının İzninin Var Olup Olmadığını Kontrol Eder
         public async Task<IResult> IsOperationSetExistForAdd(UserOperationClaim userOperationClaim)
         {
             var result = await _userOperationClaimDal.Get(p => p.UserId == userOperationClaim.UserId && p.OperationClaimId == userOperationClaim.OperationClaimId);
@@ -104,7 +119,9 @@ namespace Business.Repositories.UserOperationClaimRepository
             }
             return new SuccessResult();
         }
+        //****************************************//
 
+        // Kullanıcı İzninin Güncellenmesinden Önce Herhangi Bir İzin Verilip Verilmediğini Kontrol Eder
         private async Task<IResult> IsOperationSetExistForUpdate(UserOperationClaim userOperationClaim)
         {
             var currentUserOperationClaim = await _userOperationClaimDal.Get(p => p.Id == userOperationClaim.Id);
@@ -118,5 +135,6 @@ namespace Business.Repositories.UserOperationClaimRepository
             }
             return new SuccessResult();
         }
+        //****************************************//
     }
 }

@@ -8,8 +8,8 @@ namespace Business.Repositories.OrderRepository.Constants
 {
     public class OrderMessages
     {
-        public static string Added = "Kayıt işlemi başarılı";
-        public static string Updated = "Güncelleme işlemi başarılı";
-        public static string Deleted = "Silme işlemi başarılı";
+        public static string Added = "Kayıt İşlemi Başarılı.!";
+        public static string Updated = "Güncelleme İşlemi Başarılı.!";
+        public static string Deleted = "Silme İşlemi Başarılı.!";
     }
 }

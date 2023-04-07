@@ -26,35 +26,40 @@ namespace Business.Repositories.CustomerRelationshipRepository
             _customerRelationshipDal = customerRelationshipDal;
         }
 
+
+        // Müþteri Etkileþimi Ekle
         [SecuredAspect()]
         [ValidationAspect(typeof(CustomerRelationshipValidator))]
         [RemoveCacheAspect("ICustomerRelationshipService.Get")]
-
         public async Task<IResult> Add(CustomerRelationship customerRelationship)
         {
             await _customerRelationshipDal.Add(customerRelationship);
             return new SuccessResult(CustomerRelationshipMessages.Added);
         }
+        //****************************************//
 
+        // Müþteri Etkileþimi Güncelle
         [SecuredAspect()]
         [ValidationAspect(typeof(CustomerRelationshipValidator))]
         [RemoveCacheAspect("ICustomerRelationshipService.Get")]
-
         public async Task<IResult> Update(CustomerRelationship customerRelationship)
         {
             await _customerRelationshipDal.Update(customerRelationship);
             return new SuccessResult(CustomerRelationshipMessages.Updated);
         }
+        //****************************************//
 
+        // Müþteri Etkileþimi Sil
         [SecuredAspect()]
         [RemoveCacheAspect("ICustomerRelationshipService.Get")]
-
         public async Task<IResult> Delete(CustomerRelationship customerRelationship)
         {
             await _customerRelationshipDal.Delete(customerRelationship);
             return new SuccessResult(CustomerRelationshipMessages.Deleted);
         }
+        //****************************************//
 
+        // Müþteri Etkileþimlerini Listele
         [SecuredAspect()]
         [CacheAspect()]
         [PerformanceAspect()]
@@ -62,12 +67,14 @@ namespace Business.Repositories.CustomerRelationshipRepository
         {
             return new SuccessDataResult<List<CustomerRelationship>>(await _customerRelationshipDal.GetAll());
         }
+        //****************************************//
 
+        // Müþteri Etkileþimlerini Id'ye Göre Getir
         [SecuredAspect()]
         public async Task<IDataResult<CustomerRelationship>> GetById(int id)
         {
             return new SuccessDataResult<CustomerRelationship>(await _customerRelationshipDal.Get(p => p.Id == id));
         }
-
+        //****************************************//
     }
 }

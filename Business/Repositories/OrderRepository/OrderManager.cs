@@ -26,35 +26,40 @@ namespace Business.Repositories.OrderRepository
             _orderDal = orderDal;
         }
 
+        
+        // Sipariþ Ekle
         [SecuredAspect()]
         [ValidationAspect(typeof(OrderValidator))]
         [RemoveCacheAspect("IOrderService.Get")]
-
         public async Task<IResult> Add(Order order)
         {
             await _orderDal.Add(order);
             return new SuccessResult(OrderMessages.Added);
         }
+        //****************************************//
 
+        // Sipariþ Güncelle
         [SecuredAspect()]
         [ValidationAspect(typeof(OrderValidator))]
         [RemoveCacheAspect("IOrderService.Get")]
-
         public async Task<IResult> Update(Order order)
         {
             await _orderDal.Update(order);
             return new SuccessResult(OrderMessages.Updated);
         }
+        //****************************************//
 
+        // Sipariþ Sil
         [SecuredAspect()]
         [RemoveCacheAspect("IOrderService.Get")]
-
         public async Task<IResult> Delete(Order order)
         {
             await _orderDal.Delete(order);
             return new SuccessResult(OrderMessages.Deleted);
         }
+        //****************************************//
 
+        // Sipariþleri Listele
         [SecuredAspect()]
         [CacheAspect()]
         [PerformanceAspect()]
@@ -62,12 +67,14 @@ namespace Business.Repositories.OrderRepository
         {
             return new SuccessDataResult<List<Order>>(await _orderDal.GetAll());
         }
+        //****************************************//
 
+        // Sipariþleri Id'ye Göre Listele
         [SecuredAspect()]
         public async Task<IDataResult<Order>> GetById(int id)
         {
             return new SuccessDataResult<Order>(await _orderDal.Get(p => p.Id == id));
         }
-
+        //****************************************//
     }
 }

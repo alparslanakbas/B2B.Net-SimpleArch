@@ -26,35 +26,39 @@ namespace Business.Repositories.BasketRepository
             _basketDal = basketDal;
         }
 
+        // Sepete Ürün Ekle
         [SecuredAspect()]
         [ValidationAspect(typeof(BasketValidator))]
         [RemoveCacheAspect("IBasketService.Get")]
-
         public async Task<IResult> Add(Basket basket)
         {
             await _basketDal.Add(basket);
             return new SuccessResult(BasketMessages.Added);
         }
+        //****************************************//
 
+        // Sepetteki Ürünleri Güncelle
         [SecuredAspect()]
         [ValidationAspect(typeof(BasketValidator))]
         [RemoveCacheAspect("IBasketService.Get")]
-
         public async Task<IResult> Update(Basket basket)
         {
             await _basketDal.Update(basket);
             return new SuccessResult(BasketMessages.Updated);
         }
+        //****************************************//
 
+        // Sepetteki Ürünleri Sil
         [SecuredAspect()]
         [RemoveCacheAspect("IBasketService.Get")]
-
         public async Task<IResult> Delete(Basket basket)
         {
             await _basketDal.Delete(basket);
             return new SuccessResult(BasketMessages.Deleted);
         }
+        //****************************************//
 
+        // Sepetteki Ürünleri Listele
         [SecuredAspect()]
         [CacheAspect()]
         [PerformanceAspect()]
@@ -62,12 +66,14 @@ namespace Business.Repositories.BasketRepository
         {
             return new SuccessDataResult<List<Basket>>(await _basketDal.GetAll());
         }
+        //****************************************//
 
+        // Sepetteki Ürünleri Id'ye Göre Getir
         [SecuredAspect()]
         public async Task<IDataResult<Basket>> GetById(int id)
         {
             return new SuccessDataResult<Basket>(await _basketDal.Get(p => p.Id == id));
         }
-
+        //****************************************//
     }
 }

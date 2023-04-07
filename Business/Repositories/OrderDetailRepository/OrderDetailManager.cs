@@ -26,16 +26,19 @@ namespace Business.Repositories.OrderDetailRepository
             _orderDetailDal = orderDetailDal;
         }
 
+
+        // Sipariþ Bilgisi Ekle
         [SecuredAspect()]
         [ValidationAspect(typeof(OrderDetailValidator))]
         [RemoveCacheAspect("IOrderDetailService.Get")]
-
         public async Task<IResult> Add(OrderDetail orderDetail)
         {
             await _orderDetailDal.Add(orderDetail);
             return new SuccessResult(OrderDetailMessages.Added);
         }
+        //****************************************//
 
+        // Sipariþ Bilgisi Güncelle
         [SecuredAspect()]
         [ValidationAspect(typeof(OrderDetailValidator))]
         [RemoveCacheAspect("IOrderDetailService.Get")]
@@ -45,7 +48,9 @@ namespace Business.Repositories.OrderDetailRepository
             await _orderDetailDal.Update(orderDetail);
             return new SuccessResult(OrderDetailMessages.Updated);
         }
+        //****************************************//
 
+        // Sipariþ Bilgisi Sil
         [SecuredAspect()]
         [RemoveCacheAspect("IOrderDetailService.Get")]
 
@@ -54,7 +59,9 @@ namespace Business.Repositories.OrderDetailRepository
             await _orderDetailDal.Delete(orderDetail);
             return new SuccessResult(OrderDetailMessages.Deleted);
         }
+        //****************************************//
 
+        // Sipariþ Bilgilerini Listele
         [SecuredAspect()]
         [CacheAspect()]
         [PerformanceAspect()]
@@ -62,12 +69,14 @@ namespace Business.Repositories.OrderDetailRepository
         {
             return new SuccessDataResult<List<OrderDetail>>(await _orderDetailDal.GetAll());
         }
+        //****************************************//
 
+        // Sipariþ Bilgilerini Id'ye Göre Getir
         [SecuredAspect()]
         public async Task<IDataResult<OrderDetail>> GetById(int id)
         {
             return new SuccessDataResult<OrderDetail>(await _orderDetailDal.Get(p => p.Id == id));
         }
-
+        //****************************************//
     }
 }

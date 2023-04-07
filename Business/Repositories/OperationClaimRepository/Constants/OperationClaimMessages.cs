@@ -2,9 +2,9 @@
 {
     public class OperationClaimMessages
     {
-        public static string Added = "Yetki başarıyla oluşturuldu";
-        public static string Updated = "Yetki başarıyla güncellendi";
-        public static string Deleted = "Yetki başarıyla silindi";
-        public static string NameIsNotAvaible = "Bu yetki adı daha önce kullanılmış";
+        public static string Added = "Yetki Başarıyla Oluşturuldu.!";
+        public static string Updated = "Yetki Başarıyla Güncellendi.!";
+        public static string Deleted = "Yetki Başarıyla Silindi.!";
+        public static string NameIsNotAvaible = "Bu Yetki Adı Daha Önce Oluşturulmuş Ekleme Başarısız.!";
     }
 }

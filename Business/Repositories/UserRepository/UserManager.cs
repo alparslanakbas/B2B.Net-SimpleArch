@@ -29,6 +29,8 @@ namespace Business.Repositories.UserRepository
             _emailParameterService = emailParameterService;
         }
 
+
+        // Kullanıcıyı Kaydet
         [RemoveCacheAspect("IUserService.Get")]
         public async Task Add(RegisterAuthDto registerDto)
         {
@@ -46,7 +48,9 @@ namespace Business.Repositories.UserRepository
 
             //await SendConfirmUserMail(user.Email);
         }
+        //****************************************//
 
+        // Kullanıcı Oluşturulurken Hesap Doğrulama Kodu Oluştur
         public async Task<string> CreateConfirmValue()
         {
         again:;
@@ -59,7 +63,9 @@ namespace Business.Repositories.UserRepository
 
             return value;
         }
+        //****************************************//
 
+        // Kullanıcıyı Oluştur
         private static User CreateUser(RegisterAuthDto registerDto, string fileName)
         {
             byte[] passwordHash, paswordSalt;
@@ -74,13 +80,17 @@ namespace Business.Repositories.UserRepository
             user.ImageUrl = fileName;
             return user;
         }
+        //****************************************//
 
+        // Kullanıcıyı Mail Adresine Göre Bul
         public async Task<User> GetByEmail(string email)
         {
             var result = await _userDal.Get(p => p.Email == email);
             return result;
         }
+        //****************************************//
 
+        // Kullanıcıyı Güncelle
         [SecuredAspect()]
         [ValidationAspect(typeof(UserValidator))]
         [RemoveCacheAspect("IUserService.Get")]
@@ -89,7 +99,9 @@ namespace Business.Repositories.UserRepository
             await _userDal.Update(user);
             return new SuccessResult(UserMessages.UpdatedUser);
         }
+        //****************************************//
 
+        // Kullanıcıyı Sil
         [SecuredAspect()]
         [RemoveCacheAspect("IUserService.Get")]
         public async Task<IResult> Delete(User user)
@@ -97,7 +109,9 @@ namespace Business.Repositories.UserRepository
             await _userDal.Delete(user);
             return new SuccessResult(UserMessages.DeletedUser);
         }
+        //****************************************//
 
+        // Kullanıcıları Listele
         [SecuredAspect()]
         [CacheAspect(60)]
         [PerformanceAspect(3)]
@@ -105,17 +119,23 @@ namespace Business.Repositories.UserRepository
         {
             return new SuccessDataResult<List<User>>(await _userDal.GetAll());
         }
+        //****************************************//
 
+        // Kullanıcıyı Id'ye Göre Getir
         public async Task<IDataResult<User>> GetById(int id)
         {
             return new SuccessDataResult<User>(await _userDal.Get(p => p.Id == id));
         }
+        //****************************************//
 
+        // Kimlik Doğrulama İçin Kullanıcıyı Tut
         public async Task<User> GetByIdForAuth(int id)
         {
             return await _userDal.Get(p => p.Id == id);
         }
+        //****************************************//
 
+        // Kullanıcının Şifresini Değiştir
         [SecuredAspect()]
         [ValidationAspect(typeof(UserChangePasswordValidator))]
         public async Task<IResult> ChangePassword(UserChangePasswordDto userChangePasswordDto)
@@ -135,7 +155,9 @@ namespace Business.Repositories.UserRepository
             await _userDal.Update(user);
             return new SuccessResult(UserMessages.PasswordChanged);
         }
+        //****************************************//
 
+        // Kullanıcı İçin Şifre Oluştur
         public async Task<IResult> CreateANewPassword(CreateANewPasswordDto createANewPasswordDto)
         {
             var user = await _userDal.Get(p => p.ForgotPasswordValue == createANewPasswordDto.ForgotPasswordValue);
@@ -158,7 +180,9 @@ namespace Business.Repositories.UserRepository
             await _userDal.Update(user);
             return new SuccessResult(UserMessages.PasswordChanged);
         }
+        //****************************************//
 
+        // Kullanıcının Parola Sıfırlamayı Önceden Kullanıldığını Kontrol Eder
         public static IResult IsForgotPasswordValueUsed(User user)
         {
             if (user.IsForgotPasswordComplete)
@@ -166,26 +190,32 @@ namespace Business.Repositories.UserRepository
             else
                 return new SuccessResult();
         }
+        //****************************************//
 
+        // Kullanıcının Şifre Sıfırlama İsteğinin Geçerli Olduğu Süre
         public static IResult IsForgotPasswordDateEnded(User user)
         {
             DateTime date1 = DateTime.Now;
             DateTime date2 = Convert.ToDateTime(user.ForgotPasswordRequestDate);
             TimeSpan result = date2 - date1;
             var remainMin = Convert.ToInt16(result.Minutes.ToString());
-            if (remainMin < -5)
+            if (remainMin < -10)
             {
                 return new ErrorResult(UserMessages.ForgotPasswordValueTimeIsEnded);
             }
 
             return new SuccessResult();
         }
+        //****************************************//
 
+        // Kullanıcının Sahip Olduğu İzinleri Listele
         public async Task<List<OperationClaim>> GetUserOperationClaims(int userId)
         {
             return await _userDal.GetUserOperatinonClaims(userId);
         }
+        //****************************************//
 
+        // Kullanıcı Doğrulama İşlemi
         public async Task<IResult> ConfirmUser(string confirmValue)
         {
             var user = await _userDal.Get(p => p.ConfirmValue == confirmValue);
@@ -198,7 +228,9 @@ namespace Business.Repositories.UserRepository
             await _userDal.Update(user);
             return new SuccessResult(UserMessages.UserConfirmIsSuccesiful);
         }
+        //****************************************//
 
+        // Kullanıcının Şifremi Unuttum Maili Gönderme
         public async Task<IResult> SendForgotPasswordMail(string email)
         {
             var user = await _userDal.Get(p => p.Email == email);
@@ -227,7 +259,9 @@ namespace Business.Repositories.UserRepository
 
             return new SuccessResult(UserMessages.ForgotPasswordMailSendSuccessiful);
         }
+        //****************************************//
 
+        // Kullanıcının Şifremi Unuttum İsteğinin Aktif Olup Olmadığını Kontrol Eder
         public IResult CheckForgotPasswordIsRequestActive(User user)
         {
             if (!user.IsForgotPasswordComplete)
@@ -238,7 +272,7 @@ namespace Business.Repositories.UserRepository
                     DateTime date2 = Convert.ToDateTime(user.ForgotPasswordRequestDate);
                     TimeSpan result = date2 - date1;
                     var remainMin = Convert.ToInt16(result.Minutes.ToString());
-                    if (remainMin >= -5)
+                    if (remainMin >= -10)
                     {
                         return new ErrorResult(UserMessages.AlreadySendForgotPasswordMail);
                     }
@@ -247,7 +281,9 @@ namespace Business.Repositories.UserRepository
 
             return new SuccessResult();
         }
+        //****************************************//
 
+        // Kullanıcının Şifresini Belirli Sürede Sıfırlamasını Kontrol Eder
         public async Task<string> CreateForgotPasswordValue()
         {
         again:;
@@ -260,7 +296,9 @@ namespace Business.Repositories.UserRepository
 
             return value;
         }
+        //****************************************//
 
+        // Kullanıcının Şifremi Unuttum Mailinin HTML Olarak Hazırlanışı
         public string ForgotPasswordEmailHtmlBody(string forgotPasswordValue)
         {
             string css = "{text - decoration: underline!important}";
@@ -268,6 +306,9 @@ namespace Business.Repositories.UserRepository
 
             return body;
         }
+        //****************************************//
+
+        // Kullanıcının Hesabının Doğrulama İşlemi Mail HTML Olarak Hazırlanışı
         public string ConfirmUserHtmlBody(string confirmValue)
         {
             string css = "{text - decoration: underline!important}";
@@ -275,7 +316,9 @@ namespace Business.Repositories.UserRepository
 
             return body;
         }
+        //****************************************//
 
+        // Kullanıcıya Doğrulama Maili Gönderme
         public async Task<IResult> SendConfirmUserMail(string email)
         {
             var user = await _userDal.Get(p => p.Email == email);
@@ -295,5 +338,6 @@ namespace Business.Repositories.UserRepository
 
             return new SuccessResult(UserMessages.ConfirmUserMailSendSuccessiful);
         }
+        //****************************************//
     }
 }

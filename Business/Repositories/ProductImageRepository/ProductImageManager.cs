@@ -26,35 +26,40 @@ namespace Business.Repositories.ProductImageRepository
             _productImageDal = productImageDal;
         }
 
+
+        // Ürün Resmi Ekle
         [SecuredAspect()]
         [ValidationAspect(typeof(ProductImageValidator))]
         [RemoveCacheAspect("IProductImageService.Get")]
-
         public async Task<IResult> Add(ProductImage productImage)
         {
             await _productImageDal.Add(productImage);
             return new SuccessResult(ProductImageMessages.Added);
         }
+        //****************************************//
 
+        // Ürün Resmi Güncelle
         [SecuredAspect()]
         [ValidationAspect(typeof(ProductImageValidator))]
         [RemoveCacheAspect("IProductImageService.Get")]
-
         public async Task<IResult> Update(ProductImage productImage)
         {
             await _productImageDal.Update(productImage);
             return new SuccessResult(ProductImageMessages.Updated);
         }
+        //****************************************//
 
+        // Ürün Resmi Sil
         [SecuredAspect()]
         [RemoveCacheAspect("IProductImageService.Get")]
-
         public async Task<IResult> Delete(ProductImage productImage)
         {
             await _productImageDal.Delete(productImage);
             return new SuccessResult(ProductImageMessages.Deleted);
         }
+        //****************************************//
 
+        // Ürün Resimlerini Listele
         [SecuredAspect()]
         [CacheAspect()]
         [PerformanceAspect()]
@@ -62,12 +67,14 @@ namespace Business.Repositories.ProductImageRepository
         {
             return new SuccessDataResult<List<ProductImage>>(await _productImageDal.GetAll());
         }
+        //****************************************//
 
+        // Ürün Resimlerini Id'ye Göre Listele
         [SecuredAspect()]
         public async Task<IDataResult<ProductImage>> GetById(int id)
         {
             return new SuccessDataResult<ProductImage>(await _productImageDal.Get(p => p.Id == id));
         }
-
+        //****************************************//
     }
 }
