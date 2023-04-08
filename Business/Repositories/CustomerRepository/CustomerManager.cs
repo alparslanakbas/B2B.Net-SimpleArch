@@ -27,7 +27,7 @@ namespace Business.Repositories.CustomerRepository
         }
 
 
-        // Müþteri Ekle
+        // MÃ¼ÅŸteri Ekle
         [SecuredAspect()] 
         [ValidationAspect(typeof(CustomerValidator))]
         [RemoveCacheAspect("ICustomerService.Get")]
@@ -38,7 +38,7 @@ namespace Business.Repositories.CustomerRepository
         }
         //****************************************//
 
-        // Müþteri Güncelle
+        // MÃ¼ÅŸteri GÃ¼ncelle
         [SecuredAspect()]
         [ValidationAspect(typeof(CustomerValidator))]
         [RemoveCacheAspect("ICustomerService.Get")]
@@ -49,7 +49,7 @@ namespace Business.Repositories.CustomerRepository
         }
         //****************************************//
 
-        // Müþteri Sil
+        // MÃ¼ÅŸteri Sil
         [SecuredAspect()]
         [RemoveCacheAspect("ICustomerService.Get")]
         public async Task<IResult> Delete(Customer customer)
@@ -59,7 +59,7 @@ namespace Business.Repositories.CustomerRepository
         }
         //****************************************//
 
-        // Müþterileri Listele
+        // MÃ¼ÅŸterileri Listele
         [SecuredAspect()]
         [CacheAspect()]
         [PerformanceAspect()]
@@ -69,7 +69,7 @@ namespace Business.Repositories.CustomerRepository
         }
         //****************************************//
 
-        // Müþterileri Id'ye Göre Getir
+        // MÃ¼ÅŸterileri Id'ye GÃ¶re Getir
         [SecuredAspect()]
         public async Task<IDataResult<Customer>> GetById(int id)
         {

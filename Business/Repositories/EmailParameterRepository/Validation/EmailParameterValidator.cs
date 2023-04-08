@@ -7,10 +7,10 @@ namespace Business.Repositories.EmailParameterRepository.Validation
     {
         public EmailParameterValidator()
         {
-            RuleFor(p => p.Smtp).NotEmpty().WithMessage("SMTP adresi boş olamaz");
-            RuleFor(p => p.Email).NotEmpty().WithMessage("Mail adresi boş olamaz");
-            RuleFor(p => p.Password).NotEmpty().WithMessage("Şifre adresi boş olamaz");
-            RuleFor(p => p.Port).NotEmpty().WithMessage("Port adresi boş olamaz");
+            RuleFor(p => p.Smtp).NotEmpty().WithMessage("SMTP Adresi Boş Olamaz.!");
+            RuleFor(p => p.Email).NotEmpty().WithMessage("Mail Adresi Boş Olamaz.!");
+            RuleFor(p => p.Password).NotEmpty().WithMessage("Şifre Adresi Boş Olamaz.!");
+            RuleFor(p => p.Port).NotEmpty().WithMessage("Port Adresi Boş Olamaz.!");
         }
     }
 }

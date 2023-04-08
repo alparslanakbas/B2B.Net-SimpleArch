@@ -38,7 +38,7 @@ namespace Business.Repositories.PriceListRepository
         }
         //****************************************//
 
-        // Fiyat Listesi Güncelle
+        // Fiyat Listesi GÃ¼ncelle
         [SecuredAspect()]
         [ValidationAspect(typeof(PriceListValidator))]
         [RemoveCacheAspect("IPriceListService.Get")]
@@ -69,7 +69,7 @@ namespace Business.Repositories.PriceListRepository
         }
         //****************************************//
 
-        // Fiyat Listelerini Id'ye Göre Listele
+        // Fiyat Listelerini Id'ye GÃ¶re Listele
         [SecuredAspect()]
         public async Task<IDataResult<PriceList>> GetById(int id)
         {

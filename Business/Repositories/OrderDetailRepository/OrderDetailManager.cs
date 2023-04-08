@@ -27,7 +27,7 @@ namespace Business.Repositories.OrderDetailRepository
         }
 
 
-        // Sipariþ Bilgisi Ekle
+        // SipariÅŸ Bilgisi Ekle
         [SecuredAspect()]
         [ValidationAspect(typeof(OrderDetailValidator))]
         [RemoveCacheAspect("IOrderDetailService.Get")]
@@ -38,7 +38,7 @@ namespace Business.Repositories.OrderDetailRepository
         }
         //****************************************//
 
-        // Sipariþ Bilgisi Güncelle
+        // SipariÅŸ Bilgisi GÃ¼ncelle
         [SecuredAspect()]
         [ValidationAspect(typeof(OrderDetailValidator))]
         [RemoveCacheAspect("IOrderDetailService.Get")]
@@ -50,7 +50,7 @@ namespace Business.Repositories.OrderDetailRepository
         }
         //****************************************//
 
-        // Sipariþ Bilgisi Sil
+        // SipariÅŸ Bilgisi Sil
         [SecuredAspect()]
         [RemoveCacheAspect("IOrderDetailService.Get")]
 
@@ -61,7 +61,7 @@ namespace Business.Repositories.OrderDetailRepository
         }
         //****************************************//
 
-        // Sipariþ Bilgilerini Listele
+        // SipariÅŸ Bilgilerini Listele
         [SecuredAspect()]
         [CacheAspect()]
         [PerformanceAspect()]
@@ -71,7 +71,7 @@ namespace Business.Repositories.OrderDetailRepository
         }
         //****************************************//
 
-        // Sipariþ Bilgilerini Id'ye Göre Getir
+        // SipariÅŸ Bilgilerini Id'ye GÃ¶re Getir
         [SecuredAspect()]
         public async Task<IDataResult<OrderDetail>> GetById(int id)
         {

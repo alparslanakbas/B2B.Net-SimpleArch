@@ -27,7 +27,7 @@ namespace Business.Repositories.CustomerRelationshipRepository
         }
 
 
-        // Müþteri Etkileþimi Ekle
+        // MÃ¼ÅŸteri EtkileÅŸimi Ekle
         [SecuredAspect()]
         [ValidationAspect(typeof(CustomerRelationshipValidator))]
         [RemoveCacheAspect("ICustomerRelationshipService.Get")]
@@ -38,7 +38,7 @@ namespace Business.Repositories.CustomerRelationshipRepository
         }
         //****************************************//
 
-        // Müþteri Etkileþimi Güncelle
+        // MÃ¼ÅŸteri EtkileÅŸimi GÃ¼ncelle
         [SecuredAspect()]
         [ValidationAspect(typeof(CustomerRelationshipValidator))]
         [RemoveCacheAspect("ICustomerRelationshipService.Get")]
@@ -49,7 +49,7 @@ namespace Business.Repositories.CustomerRelationshipRepository
         }
         //****************************************//
 
-        // Müþteri Etkileþimi Sil
+        // MÃ¼ÅŸteri EtkileÅŸimi Sil
         [SecuredAspect()]
         [RemoveCacheAspect("ICustomerRelationshipService.Get")]
         public async Task<IResult> Delete(CustomerRelationship customerRelationship)
@@ -59,7 +59,7 @@ namespace Business.Repositories.CustomerRelationshipRepository
         }
         //****************************************//
 
-        // Müþteri Etkileþimlerini Listele
+        // MÃ¼ÅŸteri EtkileÅŸimlerini Listele
         [SecuredAspect()]
         [CacheAspect()]
         [PerformanceAspect()]
@@ -69,7 +69,7 @@ namespace Business.Repositories.CustomerRelationshipRepository
         }
         //****************************************//
 
-        // Müþteri Etkileþimlerini Id'ye Göre Getir
+        // MÃ¼ÅŸteri EtkileÅŸimlerini Id'ye GÃ¶re Getir
         [SecuredAspect()]
         public async Task<IDataResult<CustomerRelationship>> GetById(int id)
         {

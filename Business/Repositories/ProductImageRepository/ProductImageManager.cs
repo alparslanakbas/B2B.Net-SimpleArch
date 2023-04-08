@@ -27,7 +27,7 @@ namespace Business.Repositories.ProductImageRepository
         }
 
 
-        // Ürün Resmi Ekle
+        // ÃœrÃ¼n Resmi Ekle
         [SecuredAspect()]
         [ValidationAspect(typeof(ProductImageValidator))]
         [RemoveCacheAspect("IProductImageService.Get")]
@@ -38,7 +38,7 @@ namespace Business.Repositories.ProductImageRepository
         }
         //****************************************//
 
-        // Ürün Resmi Güncelle
+        // ÃœrÃ¼n Resmi GÃ¼ncelle
         [SecuredAspect()]
         [ValidationAspect(typeof(ProductImageValidator))]
         [RemoveCacheAspect("IProductImageService.Get")]
@@ -49,7 +49,7 @@ namespace Business.Repositories.ProductImageRepository
         }
         //****************************************//
 
-        // Ürün Resmi Sil
+        // ÃœrÃ¼n Resmi Sil
         [SecuredAspect()]
         [RemoveCacheAspect("IProductImageService.Get")]
         public async Task<IResult> Delete(ProductImage productImage)
@@ -59,7 +59,7 @@ namespace Business.Repositories.ProductImageRepository
         }
         //****************************************//
 
-        // Ürün Resimlerini Listele
+        // ÃœrÃ¼n Resimlerini Listele
         [SecuredAspect()]
         [CacheAspect()]
         [PerformanceAspect()]
@@ -69,7 +69,7 @@ namespace Business.Repositories.ProductImageRepository
         }
         //****************************************//
 
-        // Ürün Resimlerini Id'ye Göre Listele
+        // ÃœrÃ¼n Resimlerini Id'ye GÃ¶re Listele
         [SecuredAspect()]
         public async Task<IDataResult<ProductImage>> GetById(int id)
         {

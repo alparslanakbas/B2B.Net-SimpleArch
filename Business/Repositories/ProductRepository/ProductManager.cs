@@ -27,7 +27,7 @@ namespace Business.Repositories.ProductRepository
         }
 
 
-        // Ürün Ekle
+        // ÃœrÃ¼n Ekle
         [SecuredAspect("Admin,Product.add")]
         [ValidationAspect(typeof(ProductValidator))]
         [RemoveCacheAspect("IProductService.Get")]
@@ -38,7 +38,7 @@ namespace Business.Repositories.ProductRepository
         }
         //****************************************//
 
-        // Ürün Güncelle
+        // ÃœrÃ¼n GÃ¼ncelle
         [SecuredAspect("Admin,Product.update")]
         [ValidationAspect(typeof(ProductValidator))]
         [RemoveCacheAspect("IProductService.Get")]
@@ -49,7 +49,7 @@ namespace Business.Repositories.ProductRepository
         }
         //****************************************//
 
-        // Ürün Sil
+        // ÃœrÃ¼n Sil
         [SecuredAspect("Admin,Product.delete")]
         [RemoveCacheAspect("IProductService.Get")]
         public async Task<IResult> Delete(Product product)
@@ -59,7 +59,7 @@ namespace Business.Repositories.ProductRepository
         }
         //****************************************//
 
-        // Ürünleri Listele
+        // ÃœrÃ¼nleri Listele
         [SecuredAspect("Admin,Product.get")]
         [CacheAspect()]
         [PerformanceAspect()]
@@ -69,7 +69,7 @@ namespace Business.Repositories.ProductRepository
         }
         //****************************************//
 
-        // Ürünleri Id'ye Göre Listele
+        // ÃœrÃ¼nleri Id'ye GÃ¶re Listele
         [SecuredAspect("Admin,Product.get")]
         public async Task<IDataResult<Product>> GetById(int id)
         {

@@ -7,8 +7,8 @@ namespace Business.Repositories.UserOperationClaimRepository.Validation
     {
         public UserOperationClaimValidator()
         {
-            RuleFor(p => p.UserId).Must(IsIdValid).WithMessage("Yetki ataması için kullanıcı seçimi yapmalısınız");
-            RuleFor(p => p.OperationClaimId).Must(IsIdValid).WithMessage("Yetki ataması için yetki seçimi yapmalısınız");
+            RuleFor(p => p.UserId).Must(IsIdValid).WithMessage("Yetki Atamak için Kullanıcı Seçimi Yapmalısınız.!");
+            RuleFor(p => p.OperationClaimId).Must(IsIdValid).WithMessage("Yetki Ataması İçin Yetki Seçimi Yapmalısınız.!");
         }
 
         private bool IsIdValid(int id)

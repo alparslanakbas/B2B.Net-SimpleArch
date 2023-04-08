@@ -27,7 +27,7 @@ namespace Business.Repositories.OrderRepository
         }
 
         
-        // Sipariþ Ekle
+        // SipariÅŸ Ekle
         [SecuredAspect()]
         [ValidationAspect(typeof(OrderValidator))]
         [RemoveCacheAspect("IOrderService.Get")]
@@ -38,7 +38,7 @@ namespace Business.Repositories.OrderRepository
         }
         //****************************************//
 
-        // Sipariþ Güncelle
+        // SipariÅŸ GÃ¼ncelle
         [SecuredAspect()]
         [ValidationAspect(typeof(OrderValidator))]
         [RemoveCacheAspect("IOrderService.Get")]
@@ -49,7 +49,7 @@ namespace Business.Repositories.OrderRepository
         }
         //****************************************//
 
-        // Sipariþ Sil
+        // SipariÅŸ Sil
         [SecuredAspect()]
         [RemoveCacheAspect("IOrderService.Get")]
         public async Task<IResult> Delete(Order order)
@@ -59,7 +59,7 @@ namespace Business.Repositories.OrderRepository
         }
         //****************************************//
 
-        // Sipariþleri Listele
+        // SipariÅŸleri Listele
         [SecuredAspect()]
         [CacheAspect()]
         [PerformanceAspect()]
@@ -69,7 +69,7 @@ namespace Business.Repositories.OrderRepository
         }
         //****************************************//
 
-        // Sipariþleri Id'ye Göre Listele
+        // SipariÅŸleri Id'ye GÃ¶re Listele
         [SecuredAspect()]
         public async Task<IDataResult<Order>> GetById(int id)
         {
