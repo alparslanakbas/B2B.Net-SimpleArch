@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Content\img\3485dd08-8184-457e-b904-ceaeb1c1a299.png" />
+    <None Remove="Content\img\44025dce-0d55-4cc5-ad7d-bbc1c133a4a8.png" />
+    <None Remove="Content\img\87696c66-0e02-47be-a4c9-28e6de02a83a.png" />
+    <None Remove="Content\img\9f523974-74eb-4103-ac66-b0567ec6897f.png" />
+    <None Remove="Content\img\e13d2aec-448a-4444-8264-901f15f1f74e.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Autofac" Version="6.4.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.9" />

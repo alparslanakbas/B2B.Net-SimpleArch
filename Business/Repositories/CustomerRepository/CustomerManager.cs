@@ -28,7 +28,7 @@ namespace Business.Repositories.CustomerRepository
 
 
         // Müþteri Ekle
-        [SecuredAspect()]
+        [SecuredAspect()] 
         [ValidationAspect(typeof(CustomerValidator))]
         [RemoveCacheAspect("ICustomerService.Get")]
         public async Task<IResult> Add(Customer customer)

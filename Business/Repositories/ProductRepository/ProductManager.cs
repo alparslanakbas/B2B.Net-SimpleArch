@@ -28,7 +28,7 @@ namespace Business.Repositories.ProductRepository
 
 
         // Ürün Ekle
-        [SecuredAspect()]
+        [SecuredAspect("Admin,Product.add")]
         [ValidationAspect(typeof(ProductValidator))]
         [RemoveCacheAspect("IProductService.Get")]
         public async Task<IResult> Add(Product product)
@@ -39,7 +39,7 @@ namespace Business.Repositories.ProductRepository
         //****************************************//
 
         // Ürün Güncelle
-        [SecuredAspect()]
+        [SecuredAspect("Admin,Product.update")]
         [ValidationAspect(typeof(ProductValidator))]
         [RemoveCacheAspect("IProductService.Get")]
         public async Task<IResult> Update(Product product)
@@ -50,7 +50,7 @@ namespace Business.Repositories.ProductRepository
         //****************************************//
 
         // Ürün Sil
-        [SecuredAspect()]
+        [SecuredAspect("Admin,Product.delete")]
         [RemoveCacheAspect("IProductService.Get")]
         public async Task<IResult> Delete(Product product)
         {
@@ -60,7 +60,7 @@ namespace Business.Repositories.ProductRepository
         //****************************************//
 
         // Ürünleri Listele
-        [SecuredAspect()]
+        [SecuredAspect("Admin,Product.get")]
         [CacheAspect()]
         [PerformanceAspect()]
         public async Task<IDataResult<List<Product>>> GetList()
@@ -70,7 +70,7 @@ namespace Business.Repositories.ProductRepository
         //****************************************//
 
         // Ürünleri Id'ye Göre Listele
-        [SecuredAspect()]
+        [SecuredAspect("Admin,Product.get")]
         public async Task<IDataResult<Product>> GetById(int id)
         {
             return new SuccessDataResult<Product>(await _productDal.Get(p => p.Id == id));
