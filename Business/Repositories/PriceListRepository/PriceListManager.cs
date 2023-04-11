@@ -28,7 +28,7 @@ namespace Business.Repositories.PriceListRepository
 
 
         // Fiyat Listesi Ekle
-        [SecuredAspect()]
+        //[SecuredAspect()]
         [ValidationAspect(typeof(PriceListValidator))]
         [RemoveCacheAspect("IPriceListService.Get")]
         public async Task<IResult> Add(PriceList priceList)

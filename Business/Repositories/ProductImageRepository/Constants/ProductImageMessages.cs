@@ -11,5 +11,6 @@ namespace Business.Repositories.ProductImageRepository.Constants
         public static string Added = "Kayıt İşlemi Başarılı.!";
         public static string Updated = "Güncelleme İşlemi Başarılı.!";
         public static string Deleted = "Silme İşlemi Başarılı.!";
+        public static string MainImageUpdate= "Seçtiğiniz Ürüne Ait Ana Resim Güncellendi.!";
     }
 }

@@ -14,6 +14,7 @@ using Business.Repositories.BasketRepository.Constants;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
 using DataAccess.Repositories.BasketRepository;
+using Entities.Dtos;
 
 namespace Business.Repositories.BasketRepository
 {
@@ -27,7 +28,7 @@ namespace Business.Repositories.BasketRepository
         }
 
         // Sepete Ürün Ekle
-        [SecuredAspect()]
+        // [SecuredAspect()]
         [ValidationAspect(typeof(BasketValidator))]
         [RemoveCacheAspect("IBasketService.Get")]
         public async Task<IResult> Add(Basket basket)
@@ -38,7 +39,7 @@ namespace Business.Repositories.BasketRepository
         //****************************************//
 
         // Sepetteki Ürünleri Güncelle
-        [SecuredAspect()]
+        //[SecuredAspect()]
         [ValidationAspect(typeof(BasketValidator))]
         [RemoveCacheAspect("IBasketService.Get")]
         public async Task<IResult> Update(Basket basket)
@@ -49,7 +50,7 @@ namespace Business.Repositories.BasketRepository
         //****************************************//
 
         // Sepetteki Ürünleri Sil
-        [SecuredAspect()]
+        //[SecuredAspect()]
         [RemoveCacheAspect("IBasketService.Get")]
         public async Task<IResult> Delete(Basket basket)
         {
@@ -59,7 +60,7 @@ namespace Business.Repositories.BasketRepository
         //****************************************//
 
         // Sepetteki Ürünleri Listele
-        [SecuredAspect()]
+        // [SecuredAspect()]
         [CacheAspect()]
         [PerformanceAspect()]
         public async Task<IDataResult<List<Basket>>> GetList()
@@ -75,6 +76,19 @@ namespace Business.Repositories.BasketRepository
             return new SuccessDataResult<Basket>(await _basketDal.Get(p => p.Id == id));
         }
         //****************************************//
-        
+
+
+        // Sipariş Ürünlerini Müşteri Id'ye Özel Listele
+        public async Task<IDataResult<List<BasketListDto>>> GetListByCustomerId(int customerId)
+        {
+            return new SuccessDataResult<List<BasketListDto>>(await _basketDal.GetListByCustomerId(customerId));
+        }
+
+        public async Task<List<Basket>> GetListByProductId(int productId)
+        {
+            return await _basketDal.GetAll(x=>x.ProductId==productId);
+        }
+        //****************************************//
+
     }
 }

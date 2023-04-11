@@ -7,6 +7,7 @@ using Core.DataAccess.EntityFramework;
 using Entities.Concrete;
 using DataAccess.Repositories.ProductImageRepository;
 using DataAccess.Context.EntityFramework;
+using Entities.Dtos;
 
 namespace DataAccess.Repositories.ProductImageRepository
 {

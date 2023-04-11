@@ -14,6 +14,9 @@ using Business.Repositories.CustomerRepository.Constants;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
 using DataAccess.Repositories.CustomerRepository;
+using Entities.Dtos;
+using Core.Utilities.Hashing;
+using Core.Utilities.Business;
 
 namespace Business.Repositories.CustomerRepository
 {
@@ -28,11 +31,29 @@ namespace Business.Repositories.CustomerRepository
 
 
         // Müşteri Ekle
-        [SecuredAspect()] 
+        // [SecuredAspect()] 
         [ValidationAspect(typeof(CustomerValidator))]
         [RemoveCacheAspect("ICustomerService.Get")]
-        public async Task<IResult> Add(Customer customer)
+        public async Task<IResult> Add(CustomerRegisterDto request)
         {
+             IResult result = BusinessRules.Run(
+                await CheckIfEmailExists(request.Email)
+                );
+
+            if (result != null)
+            {
+                return result;
+            }
+
+            byte[] passwordHash,passwordSalt;
+            HashingHelper.CreatePassword(request.Password,out passwordHash,out passwordSalt);
+            Customer customer = new Customer{
+                Id=0,
+                Name=request.Name,
+                Email=request.Email,
+                PasswordHash=passwordHash,
+                PasswordSalt=passwordSalt
+            };
             await _customerDal.Add(customer);
             return new SuccessResult(CustomerMessages.Added);
         }
@@ -42,9 +63,9 @@ namespace Business.Repositories.CustomerRepository
         [SecuredAspect()]
         [ValidationAspect(typeof(CustomerValidator))]
         [RemoveCacheAspect("ICustomerService.Get")]
-        public async Task<IResult> Update(Customer customer)
+        public async Task<IResult> Update(Customer request)
         {
-            await _customerDal.Update(customer);
+            await _customerDal.Update(request);
             return new SuccessResult(CustomerMessages.Updated);
         }
         //****************************************//
@@ -52,9 +73,9 @@ namespace Business.Repositories.CustomerRepository
         // Müşteri Sil
         [SecuredAspect()]
         [RemoveCacheAspect("ICustomerService.Get")]
-        public async Task<IResult> Delete(Customer customer)
+        public async Task<IResult> Delete(Customer request)
         {
-            await _customerDal.Delete(customer);
+            await _customerDal.Delete(request);
             return new SuccessResult(CustomerMessages.Deleted);
         }
         //****************************************//
@@ -76,5 +97,28 @@ namespace Business.Repositories.CustomerRepository
             return new SuccessDataResult<Customer>(await _customerDal.Get(p => p.Id == id));
         }
         //****************************************//
+
+        // Müşterileri Mail Adresine Göre Getir
+        public async Task<Customer> GetByEmail(string email)
+        {
+            var result = await _customerDal.Get(x=>x.Email==email);
+            return result;
+        }
+        //****************************************//
+
+
+        // Aynı Mail Adresini Kontrol Etme İşlemi
+        private async Task<IResult> CheckIfEmailExists(string email)
+        {
+            var list = await GetByEmail(email);
+            if (list != null)
+            {
+                return new ErrorResult("Bu Mail Adresi Sistem de Zaten Mevcut.!");
+            }
+            return new SuccessResult();
+        }
+
+        //****************************************//
+
     }
 }

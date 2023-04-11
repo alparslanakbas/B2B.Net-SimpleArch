@@ -1,5 +1,6 @@
 using Business.Repositories.ProductImageRepository;
 using Entities.Concrete;
+using Entities.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -16,9 +17,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> Add(ProductImage productImage)
+        public async Task<IActionResult> Add([FromForm]ProductImageAddDto request)
         {
-            var result = await _productImageService.Add(productImage);
+            var result = await _productImageService.Add(request);
             if (result.Success)
             {
                 return Ok(result);
@@ -27,9 +28,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> Update(ProductImage productImage)
+        public async Task<IActionResult> Update([FromForm]ProductImageUpdateDto request)
         {
-            var result = await _productImageService.Update(productImage);
+            var result = await _productImageService.Update(request);
             if (result.Success)
             {
                 return Ok(result);
@@ -63,6 +64,17 @@ namespace WebApi.Controllers
         public async Task<IActionResult> GetById(int id)
         {
             var result = await _productImageService.GetById(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpGet("[action]/{id}")]
+        public async Task<IActionResult> SetMainImage(int id)
+        {
+            var result = await _productImageService.SetMainImage(id);
             if (result.Success)
             {
                 return Ok(result);

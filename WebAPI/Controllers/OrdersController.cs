@@ -15,10 +15,10 @@ namespace WebApi.Controllers
             _orderService = orderService;
         }
 
-        [HttpPost("[action]")]
-        public async Task<IActionResult> Add(Order order)
+        [HttpPost("[action]/{customerId}")]
+        public async Task<IActionResult> Add(int customerId)
         {
-            var result = await _orderService.Add(order);
+            var result = await _orderService.Add(customerId);
             if (result.Success)
             {
                 return Ok(result);

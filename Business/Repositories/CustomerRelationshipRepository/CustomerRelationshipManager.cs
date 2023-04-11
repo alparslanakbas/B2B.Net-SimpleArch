@@ -28,7 +28,7 @@ namespace Business.Repositories.CustomerRelationshipRepository
 
 
         // Müşteri Etkileşimi Ekle
-        [SecuredAspect()]
+        // [SecuredAspect()]
         [ValidationAspect(typeof(CustomerRelationshipValidator))]
         [RemoveCacheAspect("ICustomerRelationshipService.Get")]
         public async Task<IResult> Add(CustomerRelationship customerRelationship)

@@ -4,6 +4,7 @@ namespace Core.Utilities.Security.JWT
 {
     public interface ITokenHandler
     {
-        Token CreateToken(User user, List<OperationClaim> operationClaims);
+        Token CreateUserToken(User user, List<OperationClaim> operationClaims);
+        Token CreateCustomerUserToken(Customer customer);
     }
 }

@@ -70,5 +70,16 @@ namespace WebApi.Controllers
             return BadRequest(result.Message);
         }
 
+         [HttpGet("[action]/{customerId}")]
+        public async Task<IActionResult> GetProductList(int customerId)
+        {
+            var result = await _productService.GetProductList(customerId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
     }
 }

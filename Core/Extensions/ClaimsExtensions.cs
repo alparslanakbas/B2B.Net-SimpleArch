@@ -13,5 +13,11 @@ namespace Core.Extensions
         {
             roles.ToList().ForEach(roles => claims.Add(new Claim(ClaimTypes.Role, roles)));
         }
+
+        public static void AddId(this ICollection<Claim> claims, string id)
+        {
+            claims.Add(new Claim(ClaimTypes.NameIdentifier,id));
+        }
+
     }
 }

@@ -1,5 +1,6 @@
 using Business.Repositories.CustomerRepository;
 using Entities.Concrete;
+using Entities.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -16,9 +17,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> Add(Customer customer)
+        public async Task<IActionResult> Add(CustomerRegisterDto request)
         {
-            var result = await _customerService.Add(customer);
+            var result = await _customerService.Add(request);
             if (result.Success)
             {
                 return Ok(result);

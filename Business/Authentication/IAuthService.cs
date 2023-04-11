@@ -7,6 +7,7 @@ namespace Business.Abstract
     public interface IAuthService
     {
         Task<IResult> Register(RegisterAuthDto registerDto);
-        Task<IDataResult<Token>> Login(LoginAuthDto loginDto);
+        Task<IDataResult<Token>> UserLogin(LoginAuthDto loginDto);
+        Task<IDataResult<Token>> CustomerLogin(CustomerLoginDto customerLoginDto);
     }
 }

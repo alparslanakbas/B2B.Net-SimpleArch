@@ -10,5 +10,6 @@ namespace DataAccess.Repositories.OrderRepository
 {
     public interface IOrderDal : IEntityRepository<Order>
     {
+        string getOrderNumber();
     }
 }

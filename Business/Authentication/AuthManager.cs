@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.Aspects.Secured;
+using Business.Repositories.CustomerRepository;
 using Business.Repositories.UserRepository;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Validation;
@@ -17,18 +18,20 @@ namespace Business.Authentication
     {
         private readonly IUserService _userService;
         private readonly ITokenHandler _tokenHandler;
+        private readonly ICustomerService _customerService;
 
-        public AuthManager(IUserService userService, ITokenHandler tokenHandler)
+        public AuthManager(IUserService userService, ITokenHandler tokenHandler,ICustomerService customerService)
         {
             _userService = userService;
             _tokenHandler = tokenHandler;
+            _customerService=customerService;
         }
 
-        public async Task<IDataResult<Token>> Login(LoginAuthDto loginDto)
+        public async Task<IDataResult<Token>> UserLogin(LoginAuthDto loginDto)
         {
             var user = await _userService.GetByEmail(loginDto.Email);
             if (user == null)
-                return new ErrorDataResult<Token>("Kullanıcı maili sistemde bulunamadı!");
+                return new ErrorDataResult<Token>("Sistemde Böyle Bir Mail Adresi Bulunamamıştır.!");
 
             //if (!user.IsConfirm)
             //    return new ErrorDataResult<Token>("Kullanıcı maili onaylanmamış!");
@@ -39,10 +42,10 @@ namespace Business.Authentication
             if (result)
             {
                 Token token = new();
-                token = _tokenHandler.CreateToken(user, operationClaims);
+                token = _tokenHandler.CreateUserToken(user, operationClaims);
                 return new SuccessDataResult<Token>(token);
             }
-            return new ErrorDataResult<Token>("Kullanıcı maili ya da şifre bilgisi yanlış");
+            return new ErrorDataResult<Token>("Kullanıcı Adı veya Şifreniz Hatalı.!");
         }
 
         [ValidationAspect(typeof(AuthValidator))]
@@ -93,6 +96,28 @@ namespace Business.Authentication
                 return new ErrorResult("Eklediğiniz resim .jpg, .jpeg, .gif, .png türlerinden biri olmalıdır!");
             }
             return new SuccessResult();
+        }
+
+        public async Task<IDataResult<Token>> CustomerLogin(CustomerLoginDto customerLoginDto)
+        {
+            var customerUser= await _customerService.GetByEmail(customerLoginDto.Email);
+            if (customerUser == null)
+                return new ErrorDataResult<Token>("Sistemde Böyle Bir Mail Adresi Bulunamamıştır.!");
+
+            //if (!user.IsConfirm)
+            //    return new ErrorDataResult<Token>("Kullanıcı maili onaylanmamış!");
+
+            var result = HashingHelper.VerifyPasswordHash(customerLoginDto.Password, customerUser.PasswordHash, customerUser.PasswordSalt);
+
+
+            if (result)
+            {
+                Token token = new Token();
+                token = _tokenHandler.CreateCustomerUserToken(customerUser);
+                return new SuccessDataResult<Token>(token);
+            }
+            return new ErrorDataResult<Token>("Kullanıcı Adı veya Şifreniz Hatalı.!");
+
         }
     }
 }

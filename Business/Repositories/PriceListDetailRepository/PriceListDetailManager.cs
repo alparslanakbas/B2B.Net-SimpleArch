@@ -28,7 +28,7 @@ namespace Business.Repositories.PriceListDetailRepository
 
         
         // Fiyat Listesi Detay Ekle
-        [SecuredAspect()]
+        //[SecuredAspect()]
         [ValidationAspect(typeof(PriceListDetailValidator))]
         [RemoveCacheAspect("IPriceListDetailService.Get")]
         public async Task<IResult> Add(PriceListDetail priceListDetail)
@@ -74,6 +74,14 @@ namespace Business.Repositories.PriceListDetailRepository
         public async Task<IDataResult<PriceListDetail>> GetById(int id)
         {
             return new SuccessDataResult<PriceListDetail>(await _priceListDetailDal.Get(p => p.Id == id));
+        }
+         //****************************************//
+
+
+         // Fiyat Listelerini Ürün Id'ye Göre Getir
+        public async Task<List<PriceListDetail>> GetListByProductId(int productId)
+        {
+            return await _priceListDetailDal.GetAll(x=>x.ProductId==productId);
         }
         //****************************************//
     }
