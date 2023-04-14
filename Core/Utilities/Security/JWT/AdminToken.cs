@@ -1,8 +1,8 @@
 ﻿namespace Core.Utilities.Security.JWT
 {
-    public class Token
+    public class AdminToken
     {
-        public string AccessToken { get; set; }
+        public string AdminAccessToken { get; set; }
         public DateTime Expiration { get; set; }
         public string RefreshToken { get; set; }
     }

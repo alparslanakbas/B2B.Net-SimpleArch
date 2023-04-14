@@ -27,11 +27,11 @@ namespace Business.Authentication
             _customerService=customerService;
         }
 
-        public async Task<IDataResult<Token>> UserLogin(LoginAuthDto loginDto)
+        public async Task<IDataResult<AdminToken>> UserLogin(LoginAuthDto loginDto)
         {
             var user = await _userService.GetByEmail(loginDto.Email);
             if (user == null)
-                return new ErrorDataResult<Token>("Sistemde Böyle Bir Mail Adresi Bulunamamıştır.!");
+                return new ErrorDataResult<AdminToken>("Sistemde Böyle Bir Mail Adresi Bulunamamıştır.!");
 
             //if (!user.IsConfirm)
             //    return new ErrorDataResult<Token>("Kullanıcı maili onaylanmamış!");
@@ -41,11 +41,11 @@ namespace Business.Authentication
 
             if (result)
             {
-                Token token = new();
+                AdminToken token = new();
                 token = _tokenHandler.CreateUserToken(user, operationClaims);
-                return new SuccessDataResult<Token>(token);
+                return new SuccessDataResult<AdminToken>(token);
             }
-            return new ErrorDataResult<Token>("Kullanıcı Adı veya Şifreniz Hatalı.!");
+            return new ErrorDataResult<AdminToken>("Kullanıcı Adı veya Şifreniz Hatalı.!");
         }
 
         [ValidationAspect(typeof(AuthValidator))]
@@ -98,11 +98,11 @@ namespace Business.Authentication
             return new SuccessResult();
         }
 
-        public async Task<IDataResult<Token>> CustomerLogin(CustomerLoginDto customerLoginDto)
+        public async Task<IDataResult<CustomerToken>> CustomerLogin(CustomerLoginDto customerLoginDto)
         {
             var customerUser= await _customerService.GetByEmail(customerLoginDto.Email);
             if (customerUser == null)
-                return new ErrorDataResult<Token>("Sistemde Böyle Bir Mail Adresi Bulunamamıştır.!");
+                return new ErrorDataResult<CustomerToken>("Sistemde Böyle Bir Mail Adresi Bulunamamıştır.!");
 
             //if (!user.IsConfirm)
             //    return new ErrorDataResult<Token>("Kullanıcı maili onaylanmamış!");
@@ -112,11 +112,11 @@ namespace Business.Authentication
 
             if (result)
             {
-                Token token = new Token();
+                CustomerToken token = new CustomerToken();
                 token = _tokenHandler.CreateCustomerUserToken(customerUser);
-                return new SuccessDataResult<Token>(token);
+                return new SuccessDataResult<CustomerToken>(token);
             }
-            return new ErrorDataResult<Token>("Kullanıcı Adı veya Şifreniz Hatalı.!");
+            return new ErrorDataResult<CustomerToken>("Kullanıcı Adı veya Şifreniz Hatalı.!");
 
         }
     }
