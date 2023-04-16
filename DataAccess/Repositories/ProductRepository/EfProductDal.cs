@@ -9,11 +9,34 @@ using DataAccess.Repositories.ProductRepository;
 using DataAccess.Context.EntityFramework;
 using Entities.Dtos;
 using Microsoft.EntityFrameworkCore;
+using Castle.Core.Resource;
+using Core.Aspects.Caching;
 
 namespace DataAccess.Repositories.ProductRepository
 {
     public class EfProductDal : EfEntityRepositoryBase<Product, SimpleContextDb>, IProductDal
     {
+        [CacheAspect()]
+        public async Task<List<ProductListDto>> GetList()
+        {
+            using (var context = new SimpleContextDb())
+            {
+
+                var result = from product in context.Products
+                             select new ProductListDto
+                             {
+                                 Id = product.Id,
+                                 Name = product.Name,
+                                 MainImageUrl = (context.ProductImages.Where(x => x.ProductId == product.Id && x.MainImage == true).Count() > 0
+                                 ? context.ProductImages.Where(x => x.ProductId == product.Id && x.MainImage == true).Select(x => x.ImageUrl).FirstOrDefault()
+                                 : "")
+                             };
+                return await result.OrderBy(x => x.Name).ToListAsync();
+            }
+        }
+
+
+        [CacheAspect()]
         public async Task<List<ProductListDto>> GetProductList(int customerId)
         {
             using(var context = new SimpleContextDb())
