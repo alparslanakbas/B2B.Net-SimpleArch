@@ -21,7 +21,7 @@ namespace Business.Repositories.OperationClaimRepository
         }
 
         // Yetki Ekleme İşlemi
-        //[SecuredAspect()] // Web Tarafı Yapıldıktan Sonra Açılacak, Şuanlık Elle Yeni İzinler Ekleneceği İçin Açık.!
+        [SecuredAspect("Admin")] 
         [ValidationAspect(typeof(OperationClaimValidator))]
         [RemoveCacheAspect("IOperationClaimService.Get")]
         public async Task<IResult> Add(OperationClaim operationClaim)
@@ -38,7 +38,7 @@ namespace Business.Repositories.OperationClaimRepository
         //****************************************//
 
         // Yetkiyi Güncelleme İşlemi
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
         [ValidationAspect(typeof(OperationClaimValidator))]
         [RemoveCacheAspect("IOperationClaimService.Get")]
         public async Task<IResult> Update(OperationClaim operationClaim)
@@ -55,7 +55,7 @@ namespace Business.Repositories.OperationClaimRepository
         //****************************************//
 
         // Yetki Silme İşlemi
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
         [RemoveCacheAspect("IOperationClaimService.Get")]
         public async Task<IResult> Delete(OperationClaim operationClaim)
         {
@@ -65,6 +65,7 @@ namespace Business.Repositories.OperationClaimRepository
         //****************************************//
 
         // Yetkileri Listeleme İşlemi
+        [SecuredAspect("Admin")]
         [CacheAspect()]
         [PerformanceAspect()]
         public async Task<IDataResult<List<OperationClaim>>> GetList()
@@ -74,6 +75,7 @@ namespace Business.Repositories.OperationClaimRepository
         //****************************************//
 
         // Yetkileri Id'ye Göre Getir
+        [SecuredAspect("Admin")]
         public async Task<IDataResult<OperationClaim>> GetById(int id)
         {
             var result = await _operationClaimDal.Get(p => p.Id == id);
@@ -82,6 +84,7 @@ namespace Business.Repositories.OperationClaimRepository
         //****************************************//
 
         // Id' ye Göre Yetkinin Bilgilerini Getir
+        [SecuredAspect("Admin")]
         public async Task<OperationClaim> GetByIdForUserService(int id)
         {
             var result = await _operationClaimDal.Get(p => p.Id == id);

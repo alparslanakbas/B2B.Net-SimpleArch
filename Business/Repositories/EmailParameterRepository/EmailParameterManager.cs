@@ -23,7 +23,7 @@ namespace Business.Repositories.EmailParameterRepository
 
 
         // Mail Parametresi Ekle
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
         [ValidationAspect(typeof(EmailParameterValidator))]
         [RemoveCacheAspect("IEmailParameterService.Get")]
         public async Task<IResult> Add(EmailParameter emailParameter)
@@ -35,7 +35,7 @@ namespace Business.Repositories.EmailParameterRepository
         //****************************************//
 
         // Mail Parametresini Güncelle
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
         [ValidationAspect(typeof(EmailParameterValidator))]
         [RemoveCacheAspect("IEmailParameterService.Get")]
         public async Task<IResult> Update(EmailParameter emailParameter)
@@ -46,7 +46,7 @@ namespace Business.Repositories.EmailParameterRepository
         //****************************************//
 
         // Mail Parametresi Sil
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
         [RemoveCacheAspect("IEmailParameterService.Get")]
         public async Task<IResult> Delete(EmailParameter emailParameter)
         {
@@ -56,6 +56,7 @@ namespace Business.Repositories.EmailParameterRepository
         //****************************************//
 
         // Mail Parametresi Getir Id'ye Göre
+        [SecuredAspect("Admin")]
         public async Task<IDataResult<EmailParameter>> GetById(int id)
         {
             return new SuccessDataResult<EmailParameter>(await _emailParameterDal.Get(p => p.Id == id));
@@ -70,6 +71,7 @@ namespace Business.Repositories.EmailParameterRepository
         //****************************************//
 
         // Mail Parametlerini Listele
+        [SecuredAspect("Admin")]
         [CacheAspect()]
         public async Task<IDataResult<List<EmailParameter>>> GetList()
         {
@@ -78,6 +80,7 @@ namespace Business.Repositories.EmailParameterRepository
         //****************************************//
 
         // Mail Gönder
+        [SecuredAspect("Admin")]
         public async Task<IResult> SendEmail(EmailParameter emailParameter, string body, string subject, string emails)
         {
             using (MailMessage mail = new MailMessage())

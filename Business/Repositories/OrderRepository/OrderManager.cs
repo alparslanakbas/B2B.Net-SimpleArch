@@ -35,7 +35,7 @@ namespace Business.Repositories.OrderRepository
 
 
         // Sipariş Ekle
-        // [SecuredAspect()]
+        [SecuredAspect("Admin")]
         [ValidationAspect(typeof(OrderValidator))]
         [RemoveCacheAspect("IOrderService.Get")]
         public async Task<IResult> Add(int customerId)
@@ -76,7 +76,7 @@ namespace Business.Repositories.OrderRepository
         //****************************************//
 
         // Sipariş Güncelle
-        //[SecuredAspect()]
+        [SecuredAspect("Admin")]
         [ValidationAspect(typeof(OrderValidator))]
         [RemoveCacheAspect("IOrderService.Get")]
         public async Task<IResult> Update(Order order)
@@ -87,7 +87,7 @@ namespace Business.Repositories.OrderRepository
         //****************************************//
 
         // Sipariş Sil
-        //[SecuredAspect()]
+        [SecuredAspect("Admin")]
         [RemoveCacheAspect("IOrderService.Get")]
         public async Task<IResult> Delete(Order order)
         {
@@ -102,7 +102,7 @@ namespace Business.Repositories.OrderRepository
         //****************************************//
 
         // Siparişleri Listele
-        //[SecuredAspect()]
+        [SecuredAspect("Admin")]
         [CacheAspect()]
         [PerformanceAspect()]
         public async Task<IDataResult<List<Order>>> GetList()
@@ -112,7 +112,8 @@ namespace Business.Repositories.OrderRepository
         //****************************************//
 
         // Siparişleri Id'ye Göre Listele
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
+        [CacheAspect()]
         public async Task<IDataResult<Order>> GetById(int id)
         {
             return new SuccessDataResult<Order>(await _orderDal.Get(p => p.Id == id));

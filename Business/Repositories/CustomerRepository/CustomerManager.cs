@@ -31,7 +31,7 @@ namespace Business.Repositories.CustomerRepository
 
 
         // Müşteri Ekle
-        // [SecuredAspect()] 
+        [SecuredAspect("Admin")]
         [ValidationAspect(typeof(CustomerValidator))]
         [RemoveCacheAspect("ICustomerService.Get")]
         public async Task<IResult> Add(CustomerRegisterDto request)
@@ -60,7 +60,7 @@ namespace Business.Repositories.CustomerRepository
         //****************************************//
 
         // Müşteri Güncelle
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
         [ValidationAspect(typeof(CustomerValidator))]
         [RemoveCacheAspect("ICustomerService.Get")]
         public async Task<IResult> Update(Customer request)
@@ -71,7 +71,7 @@ namespace Business.Repositories.CustomerRepository
         //****************************************//
 
         // Müşteri Sil
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
         [RemoveCacheAspect("ICustomerService.Get")]
         public async Task<IResult> Delete(Customer request)
         {
@@ -81,7 +81,7 @@ namespace Business.Repositories.CustomerRepository
         //****************************************//
 
         // Müşterileri Listele
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
         [CacheAspect()]
         [PerformanceAspect()]
         public async Task<IDataResult<List<Customer>>> GetList()
@@ -91,7 +91,7 @@ namespace Business.Repositories.CustomerRepository
         //****************************************//
 
         // Müşterileri Id'ye Göre Getir
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
         public async Task<IDataResult<Customer>> GetById(int id)
         {
             return new SuccessDataResult<Customer>(await _customerDal.Get(p => p.Id == id));

@@ -26,9 +26,9 @@ namespace Business.Repositories.PriceListDetailRepository
             _priceListDetailDal = priceListDetailDal;
         }
 
-        
+
         // Fiyat Listesi Detay Ekle
-        //[SecuredAspect()]
+        [SecuredAspect("Admin")]
         [ValidationAspect(typeof(PriceListDetailValidator))]
         [RemoveCacheAspect("IPriceListDetailService.Get")]
         public async Task<IResult> Add(PriceListDetail priceListDetail)
@@ -39,7 +39,7 @@ namespace Business.Repositories.PriceListDetailRepository
         //****************************************//
 
         // Fiyat Listesi Detay Güncelle
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
         [ValidationAspect(typeof(PriceListDetailValidator))]
         [RemoveCacheAspect("IPriceListDetailService.Get")]
         public async Task<IResult> Update(PriceListDetail priceListDetail)
@@ -50,7 +50,7 @@ namespace Business.Repositories.PriceListDetailRepository
         //****************************************//
 
         // Fiyat Listesi Detay Sil
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
         [RemoveCacheAspect("IPriceListDetailService.Get")]
         public async Task<IResult> Delete(PriceListDetail priceListDetail)
         {
@@ -60,7 +60,7 @@ namespace Business.Repositories.PriceListDetailRepository
         //****************************************//
 
         // Fiyat Listelerinin Detaylarını Listele
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
         [CacheAspect()]
         [PerformanceAspect()]
         public async Task<IDataResult<List<PriceListDetail>>> GetList()
@@ -70,15 +70,18 @@ namespace Business.Repositories.PriceListDetailRepository
         //****************************************//
 
         // Fiyat Listelerinin Detaylarını Id'ye Göre Listele
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
+        [CacheAspect()]
         public async Task<IDataResult<PriceListDetail>> GetById(int id)
         {
             return new SuccessDataResult<PriceListDetail>(await _priceListDetailDal.Get(p => p.Id == id));
         }
-         //****************************************//
+        //****************************************//
 
 
-         // Fiyat Listelerini Ürün Id'ye Göre Getir
+        // Fiyat Listelerini Ürün Id'ye Göre Getir
+        [SecuredAspect("Admin")]
+        [CacheAspect()]
         public async Task<List<PriceListDetail>> GetListByProductId(int productId)
         {
             return await _priceListDetailDal.GetAll(x=>x.ProductId==productId);

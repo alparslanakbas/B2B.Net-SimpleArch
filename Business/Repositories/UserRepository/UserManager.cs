@@ -102,7 +102,7 @@ namespace Business.Repositories.UserRepository
         //****************************************//
 
         // Kullanıcıyı Sil
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
         [RemoveCacheAspect("IUserService.Get")]
         public async Task<IResult> Delete(User user)
         {

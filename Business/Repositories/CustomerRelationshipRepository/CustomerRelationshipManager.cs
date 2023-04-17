@@ -28,7 +28,7 @@ namespace Business.Repositories.CustomerRelationshipRepository
 
 
         // Müşteri Etkileşimi Ekle
-        // [SecuredAspect()]
+        [SecuredAspect("Admin")]
         [ValidationAspect(typeof(CustomerRelationshipValidator))]
         [RemoveCacheAspect("ICustomerRelationshipService.Get")]
         public async Task<IResult> Add(CustomerRelationship customerRelationship)
@@ -39,7 +39,7 @@ namespace Business.Repositories.CustomerRelationshipRepository
         //****************************************//
 
         // Müşteri Etkileşimi Güncelle
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
         [ValidationAspect(typeof(CustomerRelationshipValidator))]
         [RemoveCacheAspect("ICustomerRelationshipService.Get")]
         public async Task<IResult> Update(CustomerRelationship customerRelationship)
@@ -50,7 +50,7 @@ namespace Business.Repositories.CustomerRelationshipRepository
         //****************************************//
 
         // Müşteri Etkileşimi Sil
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
         [RemoveCacheAspect("ICustomerRelationshipService.Get")]
         public async Task<IResult> Delete(CustomerRelationship customerRelationship)
         {
@@ -60,7 +60,7 @@ namespace Business.Repositories.CustomerRelationshipRepository
         //****************************************//
 
         // Müşteri Etkileşimlerini Listele
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
         [CacheAspect()]
         [PerformanceAspect()]
         public async Task<IDataResult<List<CustomerRelationship>>> GetList()
@@ -70,7 +70,7 @@ namespace Business.Repositories.CustomerRelationshipRepository
         //****************************************//
 
         // Müşteri Etkileşimlerini Id'ye Göre Getir
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
         public async Task<IDataResult<CustomerRelationship>> GetById(int id)
         {
             return new SuccessDataResult<CustomerRelationship>(await _customerRelationshipDal.Get(p => p.Id == id));

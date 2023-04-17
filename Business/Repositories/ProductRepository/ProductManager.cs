@@ -42,7 +42,7 @@ namespace Business.Repositories.ProductRepository
 
 
         // Ürün Ekle
-        //[SecuredAspect("Admin,Product.add")]
+        [SecuredAspect("Admin,Product.add")]
         [ValidationAspect(typeof(ProductValidator))]
         [RemoveCacheAspect("IProductService.Get")]
         public async Task<IResult> Add(Product product)
@@ -79,7 +79,7 @@ namespace Business.Repositories.ProductRepository
             }
 
             var images = await _productImageService.GetListByProductId(product.Id);
-            foreach (var image in images)
+            foreach (var image in images.Data)
             {
                 await _productImageService.Delete(image);
             }
@@ -111,10 +111,11 @@ namespace Business.Repositories.ProductRepository
         {
             return new SuccessDataResult<Product>(await _productDal.Get(p => p.Id == id));
         }
-        
-         //****************************************//
+
+        //****************************************//
 
         // Ürün Listesini Müşteriye Göre Getir
+        [CacheAspect()]
         public async Task<IDataResult<List<ProductListDto>>> GetProductList(int customerId)
         {
             return new SuccessDataResult<List<ProductListDto>>(await _productDal.GetProductList(customerId));

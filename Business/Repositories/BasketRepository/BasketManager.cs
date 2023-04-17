@@ -28,7 +28,7 @@ namespace Business.Repositories.BasketRepository
         }
 
         // Sepete Ürün Ekle
-        // [SecuredAspect()]
+        [SecuredAspect("Admin")]
         [ValidationAspect(typeof(BasketValidator))]
         [RemoveCacheAspect("IBasketService.Get")]
         public async Task<IResult> Add(Basket basket)
@@ -39,7 +39,7 @@ namespace Business.Repositories.BasketRepository
         //****************************************//
 
         // Sepetteki Ürünleri Güncelle
-        //[SecuredAspect()]
+        [SecuredAspect("Admin")]
         [ValidationAspect(typeof(BasketValidator))]
         [RemoveCacheAspect("IBasketService.Get")]
         public async Task<IResult> Update(Basket basket)
@@ -50,7 +50,7 @@ namespace Business.Repositories.BasketRepository
         //****************************************//
 
         // Sepetteki Ürünleri Sil
-        //[SecuredAspect()]
+        [SecuredAspect("Admin")]
         [RemoveCacheAspect("IBasketService.Get")]
         public async Task<IResult> Delete(Basket basket)
         {
@@ -60,7 +60,7 @@ namespace Business.Repositories.BasketRepository
         //****************************************//
 
         // Sepetteki Ürünleri Listele
-        // [SecuredAspect()]
+        [SecuredAspect("Admin")]
         [CacheAspect()]
         [PerformanceAspect()]
         public async Task<IDataResult<List<Basket>>> GetList()
@@ -70,7 +70,8 @@ namespace Business.Repositories.BasketRepository
         //****************************************//
 
         // Sepetteki Ürünleri Id'ye Göre Getir
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
+        [CacheAspect()]
         public async Task<IDataResult<Basket>> GetById(int id)
         {
             return new SuccessDataResult<Basket>(await _basketDal.Get(p => p.Id == id));
@@ -78,12 +79,19 @@ namespace Business.Repositories.BasketRepository
         //****************************************//
 
 
-        // Sipariş Ürünlerini Müşteri Id'ye Özel Listele
+        // Sepetteki Ürünlerini Müşteri Id'ye Özel Listele
+        [SecuredAspect("Admin")]
+        [CacheAspect()]
         public async Task<IDataResult<List<BasketListDto>>> GetListByCustomerId(int customerId)
         {
             return new SuccessDataResult<List<BasketListDto>>(await _basketDal.GetListByCustomerId(customerId));
         }
+        //****************************************//
 
+
+        //Sepetteki Ürünleri Ürün Id'ye Göre Listele
+        [SecuredAspect("Admin")]
+        [CacheAspect()]
         public async Task<List<Basket>> GetListByProductId(int productId)
         {
             return await _basketDal.GetAll(x=>x.ProductId==productId);

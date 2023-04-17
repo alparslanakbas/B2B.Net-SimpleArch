@@ -34,7 +34,7 @@ namespace Business.Repositories.ProductImageRepository
 
 
         // Ürün Resmi Ekle
-        //[SecuredAspect()]
+        [SecuredAspect("Admin")]
         [ValidationAspect(typeof(ProductImageValidator))]
         [RemoveCacheAspect("IProductImageService.Get")]
         public async Task<IResult> Add(ProductImageAddDto request)
@@ -64,7 +64,7 @@ namespace Business.Repositories.ProductImageRepository
         //****************************************//
 
         // Ürün Resmi Güncelle
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
         [ValidationAspect(typeof(ProductImageValidator))]
         [RemoveCacheAspect("IProductImageService.Get")]
         public async Task<IResult> Update(ProductImageUpdateDto request)
@@ -97,7 +97,7 @@ namespace Business.Repositories.ProductImageRepository
         //****************************************//
 
         // Ürün Resmi Sil
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
         [RemoveCacheAspect("IProductImageService.Get")]
         public async Task<IResult> Delete(ProductImage request)
         {
@@ -109,7 +109,7 @@ namespace Business.Repositories.ProductImageRepository
         //****************************************//
 
         // Ürün Resimlerini Listele
-        //[SecuredAspect()]
+        [SecuredAspect("Admin")]
         [CacheAspect()]
         [PerformanceAspect()]
         public async Task<IDataResult<List<ProductImage>>> GetList()
@@ -119,7 +119,8 @@ namespace Business.Repositories.ProductImageRepository
         //****************************************//
 
         // Ürün Resimlerini Id'ye Göre Listele
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
+        [CacheAspect()]
         public async Task<IDataResult<ProductImage>> GetById(int id)
         {
             return new SuccessDataResult<ProductImage>(await _productImageDal.Get(p => p.Id == id));
@@ -131,9 +132,9 @@ namespace Business.Repositories.ProductImageRepository
         private IResult CheckIfImageSizeIsLessThanOneMb(long imgSize)
         {
             decimal imgMbSize = Convert.ToDecimal(imgSize * 0.000001);
-            if (imgMbSize > 5)
+            if (imgMbSize > 10)
             {
-                return new ErrorResult("Yüklediğiniz Resmin Boyutu 5MB Küçük Olmalıdır.!");
+                return new ErrorResult("Yüklediğiniz Resmin Boyutu 10MB Küçük Olmalıdır.!");
             }
             return new SuccessResult();
         }
@@ -154,7 +155,7 @@ namespace Business.Repositories.ProductImageRepository
         //****************************************//
 
         // Ürünün Genel Olarak Tek Resimle Yansıtılması Yani 1 Ürünün Ana Resmini Alma
-        //[SecuredAspect()]
+        [SecuredAspect("Admin")]
         [TransactionAspect()]
         public async Task<IResult> SetMainImage(int id)
         {
@@ -172,9 +173,11 @@ namespace Business.Repositories.ProductImageRepository
         //****************************************//
 
         // Ürüne Göre Listeleme İşlemi
-        public async Task<List<ProductImage>> GetListByProductId(int productId)
+        [SecuredAspect("Admin")]
+        [CacheAspect()]
+        public async Task<IDataResult<List<ProductImage>>> GetListByProductId(int productId)
         {
-            return await _productImageDal.GetAll(x=>x.ProductId==productId);
+            return new SuccessDataResult<List<ProductImage>> (await _productImageDal.GetAll(x=>x.ProductId==productId));
         }
         //****************************************//
     }

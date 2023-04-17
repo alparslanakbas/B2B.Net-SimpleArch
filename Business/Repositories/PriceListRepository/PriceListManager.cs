@@ -28,7 +28,7 @@ namespace Business.Repositories.PriceListRepository
 
 
         // Fiyat Listesi Ekle
-        //[SecuredAspect()]
+        [SecuredAspect("Admin")]
         [ValidationAspect(typeof(PriceListValidator))]
         [RemoveCacheAspect("IPriceListService.Get")]
         public async Task<IResult> Add(PriceList priceList)
@@ -39,7 +39,7 @@ namespace Business.Repositories.PriceListRepository
         //****************************************//
 
         // Fiyat Listesi Güncelle
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
         [ValidationAspect(typeof(PriceListValidator))]
         [RemoveCacheAspect("IPriceListService.Get")]
         public async Task<IResult> Update(PriceList priceList)
@@ -50,7 +50,7 @@ namespace Business.Repositories.PriceListRepository
         //****************************************//
 
         // Fiyat Listesi Sil
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
         [RemoveCacheAspect("IPriceListService.Get")]
         public async Task<IResult> Delete(PriceList priceList)
         {
@@ -60,7 +60,7 @@ namespace Business.Repositories.PriceListRepository
         //****************************************//
 
         // Fiyat Listelerini Listele
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
         [CacheAspect()]
         [PerformanceAspect()]
         public async Task<IDataResult<List<PriceList>>> GetList()
@@ -71,6 +71,7 @@ namespace Business.Repositories.PriceListRepository
 
         // Fiyat Listelerini Id'ye Göre Listele
         [SecuredAspect()]
+        [CacheAspect()]
         public async Task<IDataResult<PriceList>> GetById(int id)
         {
             return new SuccessDataResult<PriceList>(await _priceListDal.Get(p => p.Id == id));

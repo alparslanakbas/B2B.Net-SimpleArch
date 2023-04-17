@@ -28,7 +28,7 @@ namespace Business.Repositories.OrderDetailRepository
 
 
         // Sipariş Bilgisi Ekle
-        //[SecuredAspect()]
+        [SecuredAspect("Admin")]
         [ValidationAspect(typeof(OrderDetailValidator))]
         [RemoveCacheAspect("IOrderDetailService.Get")]
         public async Task<IResult> Add(OrderDetail orderDetail)
@@ -39,7 +39,7 @@ namespace Business.Repositories.OrderDetailRepository
         //****************************************//
 
         // Sipariş Bilgisi Güncelle
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
         [ValidationAspect(typeof(OrderDetailValidator))]
         [RemoveCacheAspect("IOrderDetailService.Get")]
 
@@ -51,7 +51,7 @@ namespace Business.Repositories.OrderDetailRepository
         //****************************************//
 
         // Sipariş Bilgisi Sil
-        // [SecuredAspect()]
+        [SecuredAspect("Admin")]
         [RemoveCacheAspect("IOrderDetailService.Get")]
 
         public async Task<IResult> Delete(OrderDetail orderDetail)
@@ -62,7 +62,7 @@ namespace Business.Repositories.OrderDetailRepository
         //****************************************//
 
         // Sipariş Bilgilerini Listele
-        //[SecuredAspect()]
+        [SecuredAspect("Admin")]
         [CacheAspect()]
         [PerformanceAspect()]
         public async Task<IDataResult<List<OrderDetail>>> GetList(int orderId)
@@ -72,7 +72,7 @@ namespace Business.Repositories.OrderDetailRepository
         //****************************************//
 
         // Sipariş Bilgilerini Id'ye Göre Getir
-        [SecuredAspect()]
+        [SecuredAspect("Admin")]
         public async Task<IDataResult<OrderDetail>> GetById(int id)
         {
             return new SuccessDataResult<OrderDetail>(await _orderDetailDal.Get(p => p.Id == id));
@@ -81,6 +81,7 @@ namespace Business.Repositories.OrderDetailRepository
 
 
         // İlgili Ürüne Ait Tüm Sipariş Detaylarını Getir
+        [SecuredAspect("Admin")]
         public async Task<List<OrderDetail>> GetListByProductId(int productId)
         {
             return await _orderDetailDal.GetAll(x=>x.ProductId==productId);

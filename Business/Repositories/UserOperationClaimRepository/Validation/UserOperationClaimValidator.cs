@@ -13,7 +13,7 @@ namespace Business.Repositories.UserOperationClaimRepository.Validation
 
         private bool IsIdValid(int id)
         {
-            if (id > 0 && id != null)
+            if (id > 0)
             {
                 return true;
             }
