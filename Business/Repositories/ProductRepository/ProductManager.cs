@@ -64,7 +64,7 @@ namespace Business.Repositories.ProductRepository
         //****************************************//
 
         // Ürün Sil
-        //[SecuredAspect("Admin,Product.delete")]
+        [SecuredAspect("Admin,Product.delete")]
         [RemoveCacheAspect("IProductService.Get")]
         public async Task<IResult> Delete(Product product)
         {
@@ -96,7 +96,7 @@ namespace Business.Repositories.ProductRepository
         //****************************************//
 
         // Ürünleri Listele
-        //[SecuredAspect("Admin,Product.get")]
+        [SecuredAspect("Admin,Product.get")]
         [CacheAspect()]
         [PerformanceAspect()]
         public async Task<IDataResult<List<ProductListDto>>> GetList()
@@ -140,7 +140,7 @@ namespace Business.Repositories.ProductRepository
         public async Task <IResult>  CheckIfProductExistToOrderDetails(int productId)
         {
             var result = await _orderDetailService.GetListByProductId(productId);
-            if (result!=null)
+            if (result.Count() > 0)
             {
                 return new ErrorResult("Silmeye Çalıştığınız Ürünün Siparişi Bulunuyor.!");    
             }
