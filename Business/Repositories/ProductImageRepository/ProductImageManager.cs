@@ -48,7 +48,7 @@ namespace Business.Repositories.ProductImageRepository
 
                 if (result == null)
                 {
-                    string fileName = _fileService.FileSaveToServer(image, "./Content/img/");
+                    string fileName = _fileService.FileSaveToServer(image, "C:/Users/legol/Desktop/b2b-front-end/src/assets/images");
                     ProductImage productImage = new()
                     {
                         Id = 0,
