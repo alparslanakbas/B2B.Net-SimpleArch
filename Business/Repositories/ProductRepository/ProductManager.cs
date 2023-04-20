@@ -115,7 +115,8 @@ namespace Business.Repositories.ProductRepository
         //****************************************//
 
         // Ürün Listesini Müşteriye Göre Getir
-        [CacheAspect()]
+        [SecuredAspect("Admin")]
+        [PerformanceAspect()]
         public async Task<IDataResult<List<ProductListDto>>> GetProductList(int customerId)
         {
             return new SuccessDataResult<List<ProductListDto>>(await _productDal.GetProductList(customerId));

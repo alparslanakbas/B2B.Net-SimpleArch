@@ -101,7 +101,7 @@ namespace Business.Repositories.ProductImageRepository
         [RemoveCacheAspect("IProductImageService.Get")]
         public async Task<IResult> Delete(ProductImage request)
         {
-            string path = @"./Content/img/" + request.ImageUrl;
+            string path = "C:/Users/legol/Desktop/b2b-front-end/src/assets/images/" + request.ImageUrl;
             _fileService.FileDeleteToServer(path);
             await _productImageDal.Delete(request);
             return new SuccessResult(ProductImageMessages.Deleted);
@@ -156,7 +156,8 @@ namespace Business.Repositories.ProductImageRepository
 
         // Ürünün Genel Olarak Tek Resimle Yansıtılması Yani 1 Ürünün Ana Resmini Alma
         [SecuredAspect("Admin")]
-        [TransactionAspect()]
+        [RemoveCacheAspect("IProductImageService.Get")]
+        [RemoveCacheAspect("IProductService.Get")]
         public async Task<IResult> SetMainImage(int id)
         {
             var productImage = await _productImageDal.Get(x=>x.Id==id);
