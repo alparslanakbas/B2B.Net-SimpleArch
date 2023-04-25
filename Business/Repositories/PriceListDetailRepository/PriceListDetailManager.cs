@@ -14,6 +14,8 @@ using Business.Repositories.PriceListDetailRepository.Constants;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
 using DataAccess.Repositories.PriceListDetailRepository;
+using Entities.Dtos;
+using Core.Utilities.Business;
 
 namespace Business.Repositories.PriceListDetailRepository
 {
@@ -33,6 +35,13 @@ namespace Business.Repositories.PriceListDetailRepository
         [RemoveCacheAspect("IPriceListDetailService.Get")]
         public async Task<IResult> Add(PriceListDetail priceListDetail)
         {
+            IResult result = BusinessRules.Run(await ChechIfProductExist(priceListDetail));
+            if (result != null)
+            {
+                return result;
+            }
+
+
             await _priceListDetailDal.Add(priceListDetail);
             return new SuccessResult(PriceListDetailMessages.Added);
         }
@@ -71,7 +80,6 @@ namespace Business.Repositories.PriceListDetailRepository
 
         // Fiyat Listelerinin Detaylarını Id'ye Göre Listele
         [SecuredAspect("Admin")]
-        [CacheAspect()]
         public async Task<IDataResult<PriceListDetail>> GetById(int id)
         {
             return new SuccessDataResult<PriceListDetail>(await _priceListDetailDal.Get(p => p.Id == id));
@@ -81,11 +89,32 @@ namespace Business.Repositories.PriceListDetailRepository
 
         // Fiyat Listelerini Ürün Id'ye Göre Getir
         [SecuredAspect("Admin")]
-        [CacheAspect()]
         public async Task<List<PriceListDetail>> GetListByProductId(int productId)
         {
             return await _priceListDetailDal.GetAll(x=>x.ProductId==productId);
         }
         //****************************************//
+
+
+        // Fiyat Listelerine Bağlı Ürün Adlarını Getir
+        [SecuredAspect("Admin")]
+        [CacheAspect()]
+        [PerformanceAspect()]
+        public async Task<IDataResult<List<PriceListDetailDto>>> GetListProductName(int priceListId)
+        {
+            return new SuccessDataResult<List<PriceListDetailDto>>(await _priceListDetailDal.GetListProductName(priceListId));
+        }
+        //****************************************//
+
+        private async Task<IResult> ChechIfProductExist(PriceListDetail priceListDetail)
+        {
+            var result = await _priceListDetailDal.Get(x=>x.PriceListId==priceListDetail.PriceListId && x.ProductId==priceListDetail.ProductId);
+
+            if (result!= null)
+            {
+                return new ErrorResult("Bu Ürün Zaten Listeye Eklenmiş.!");
+            }
+            return new SuccessResult();
+        }
     }
 }
