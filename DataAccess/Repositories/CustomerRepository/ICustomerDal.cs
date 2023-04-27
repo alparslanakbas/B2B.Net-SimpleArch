@@ -11,6 +11,7 @@ namespace DataAccess.Repositories.CustomerRepository
 {
     public interface ICustomerDal : IEntityRepository<Customer>
     {
-        
+        Task<List<CustomerListDto>> GetListDto();
+        Task<CustomerListDto> GetDto(int id);
     }
 }

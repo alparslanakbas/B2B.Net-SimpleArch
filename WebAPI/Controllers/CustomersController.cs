@@ -28,9 +28,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> Update(Customer customer)
+        public async Task<IActionResult> Update(Customer request)
         {
-            var result = await _customerService.Update(customer);
+            var result = await _customerService.Update(request);
             if (result.Success)
             {
                 return Ok(result);
@@ -71,5 +71,15 @@ namespace WebApi.Controllers
             return BadRequest(result.Message);
         }
 
+        [HttpGet("[action]/{id}")]
+        public async Task<IActionResult> GetCustomerById(int id)
+        {
+            var result = await _customerService.GetByCustomerDto(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
     }
 }

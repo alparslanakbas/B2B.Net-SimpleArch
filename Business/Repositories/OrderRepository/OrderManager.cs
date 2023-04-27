@@ -119,5 +119,15 @@ namespace Business.Repositories.OrderRepository
             return new SuccessDataResult<Order>(await _orderDal.Get(p => p.Id == id));
         }
         //****************************************//
+
+        // Siparişleri Müşteri Id'sine Göre Listele
+        [SecuredAspect("Admin")]
+        [CacheAspect()]
+        [PerformanceAspect()]
+        public async Task<IDataResult<List<Order>>> GetListByCustomerId(int customerId)
+        {
+            return new SuccessDataResult<List<Order>>(await _orderDal.GetAll(x=>x.CustomerId==customerId));
+        }
+        //****************************************//
     }
 }

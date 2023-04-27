@@ -42,9 +42,20 @@ namespace Business.Repositories.CustomerRelationshipRepository
         [SecuredAspect("Admin")]
         [ValidationAspect(typeof(CustomerRelationshipValidator))]
         [RemoveCacheAspect("ICustomerRelationshipService.Get")]
+        [RemoveCacheAspect("ICustomerService.Get")]
         public async Task<IResult> Update(CustomerRelationship customerRelationship)
         {
-            await _customerRelationshipDal.Update(customerRelationship);
+            var result = await _customerRelationshipDal.Get(x=>x.CustomerId == customerRelationship.CustomerId);
+            if (result != null)
+            {
+                customerRelationship.Id = result.Id;
+                await _customerRelationshipDal.Update(customerRelationship);
+            }
+            else
+            {
+                await _customerRelationshipDal.Add(customerRelationship);
+            }
+            
             return new SuccessResult(CustomerRelationshipMessages.Updated);
         }
         //****************************************//
@@ -74,6 +85,11 @@ namespace Business.Repositories.CustomerRelationshipRepository
         public async Task<IDataResult<CustomerRelationship>> GetById(int id)
         {
             return new SuccessDataResult<CustomerRelationship>(await _customerRelationshipDal.Get(p => p.Id == id));
+        }
+
+        public async Task<IDataResult<CustomerRelationship>> GetByCustomerId(int customerId)
+        {
+            return new SuccessDataResult<CustomerRelationship>(await _customerRelationshipDal.Get(p => p.CustomerId == customerId));
         }
         //****************************************//
     }
