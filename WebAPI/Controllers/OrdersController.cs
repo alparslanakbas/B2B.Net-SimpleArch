@@ -70,5 +70,28 @@ namespace WebApi.Controllers
             return BadRequest(result.Message);
         }
 
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetListWithOrderDto()
+        {
+            var result = await _orderService.GetListWithOrderDto();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
+
+        [HttpGet("[action]/{id}")]
+        public async Task<IActionResult> GetByIdDto(int id)
+        {
+            var result = await _orderService.GetByIdDto(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
     }
 }

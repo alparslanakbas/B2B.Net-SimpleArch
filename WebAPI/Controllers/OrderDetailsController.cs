@@ -51,7 +51,7 @@ namespace WebApi.Controllers
         [HttpGet("[action]/{orderId}")]
         public async Task<IActionResult> GetList(int orderId)
         {
-            var result = await _orderDetailService.GetList(orderId);
+            var result = await _orderDetailService.GetListProductOrderDetail(orderId);
             if (result.Success)
             {
                 return Ok(result);

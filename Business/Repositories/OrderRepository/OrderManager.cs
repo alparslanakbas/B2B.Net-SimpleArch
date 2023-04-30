@@ -128,6 +128,20 @@ namespace Business.Repositories.OrderRepository
         {
             return new SuccessDataResult<List<Order>>(await _orderDal.GetAll(x=>x.CustomerId==customerId));
         }
+
+
+        [SecuredAspect("Admin")]
+        [CacheAspect()]
+        [PerformanceAspect()]
+        public async Task<IDataResult<List<OrderListDto>>> GetListWithOrderDto()
+        {
+            return new SuccessDataResult<List<OrderListDto>>(await _orderDal.GetListOrderDto());
+        }
+
+        public async Task<IDataResult<OrderListDto>> GetByIdDto(int id)
+        {
+            return new SuccessDataResult<OrderListDto>(await _orderDal.GetByIdDto(id));
+        }
         //****************************************//
     }
 }

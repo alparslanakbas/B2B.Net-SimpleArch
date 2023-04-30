@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Entities.Concrete;
 using Core.Utilities.Result.Abstract;
+using Entities.Dtos;
 
 namespace Business.Repositories.OrderDetailRepository
 {
@@ -16,5 +17,6 @@ namespace Business.Repositories.OrderDetailRepository
         Task<IDataResult<List<OrderDetail>>> GetList(int orderId);
         Task<List<OrderDetail>> GetListByProductId(int productId);
         Task<IDataResult<OrderDetail>> GetById(int id);
+        Task<IDataResult<List<OrderDetailListDto>>> GetListProductOrderDetail(int orderId);
     }
 }
