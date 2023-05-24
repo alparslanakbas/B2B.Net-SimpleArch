@@ -29,6 +29,8 @@ using Business.Repositories.ProductImageRepository;
 using DataAccess.Repositories.ProductImageRepository;
 using Business.Repositories.ProductRepository;
 using DataAccess.Repositories.ProductRepository;
+using Business.Repositories.CustomerOperationClaimRepository;
+using DataAccess.Repositories.CustomerOperationClaimRepository;
 using DataAccess.Repositories.UserRepository;
 
 namespace Business.DependencyResolvers.Autofac
@@ -79,6 +81,9 @@ namespace Business.DependencyResolvers.Autofac
 
             builder.RegisterType<ProductManager>().As<IProductService>().SingleInstance();
             builder.RegisterType<EfProductDal>().As<IProductDal>().SingleInstance();
+
+            builder.RegisterType<CustomerOperationClaimManager>().As<ICustomerOperationClaimService>().SingleInstance();
+            builder.RegisterType<EfCustomerOperationClaimDal>().As<ICustomerOperationClaimDal>().SingleInstance();
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

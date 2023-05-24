@@ -34,7 +34,7 @@ namespace Business.Repositories.ProductImageRepository
 
 
         // Ürün Resmi Ekle
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         [ValidationAspect(typeof(ProductImageValidator))]
         [RemoveCacheAspect("IProductImageService.Get")]
         public async Task<IResult> Add(ProductImageAddDto request)
@@ -64,7 +64,7 @@ namespace Business.Repositories.ProductImageRepository
         //****************************************//
 
         // Ürün Resmi Güncelle
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         [ValidationAspect(typeof(ProductImageValidator))]
         [RemoveCacheAspect("IProductImageService.Get")]
         public async Task<IResult> Update(ProductImageUpdateDto request)
@@ -97,7 +97,7 @@ namespace Business.Repositories.ProductImageRepository
         //****************************************//
 
         // Ürün Resmi Sil
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         [RemoveCacheAspect("IProductImageService.Get")]
         public async Task<IResult> Delete(ProductImage request)
         {
@@ -109,7 +109,7 @@ namespace Business.Repositories.ProductImageRepository
         //****************************************//
 
         // Ürün Resimlerini Listele
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri,Kullanıcı")]
         [CacheAspect()]
         [PerformanceAspect()]
         public async Task<IDataResult<List<ProductImage>>> GetList()
@@ -119,7 +119,7 @@ namespace Business.Repositories.ProductImageRepository
         //****************************************//
 
         // Ürün Resimlerini Id'ye Göre Listele
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri,Kullanıcı")]
         [CacheAspect()]
         public async Task<IDataResult<ProductImage>> GetById(int id)
         {
@@ -155,7 +155,7 @@ namespace Business.Repositories.ProductImageRepository
         //****************************************//
 
         // Ürünün Genel Olarak Tek Resimle Yansıtılması Yani 1 Ürünün Ana Resmini Alma
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         [RemoveCacheAspect("IProductImageService.Get")]
         [RemoveCacheAspect("IProductService.Get")]
         public async Task<IResult> SetMainImage(int id)
@@ -174,7 +174,7 @@ namespace Business.Repositories.ProductImageRepository
         //****************************************//
 
         // Ürüne Göre Listeleme İşlemi
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri,Kullanıcı")]
         [CacheAspect()]
         public async Task<IDataResult<List<ProductImage>>> GetListByProductId(int productId)
         {

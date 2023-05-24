@@ -11,6 +11,7 @@ using Core.Utilities.Result.Concrete;
 using Core.Utilities.Security.JWT;
 using Entities.Concrete;
 using Entities.Dtos;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Business.Authentication
 {
@@ -27,11 +28,11 @@ namespace Business.Authentication
             _customerService=customerService;
         }
 
-        public async Task<IDataResult<AdminToken>> UserLogin(LoginAuthDto loginDto)
+        public async Task<IDataResult<UserToken>> UserLogin(UserLoginDto loginDto)
         {
             var user = await _userService.GetByEmail(loginDto.Email);
             if (user == null)
-                return new ErrorDataResult<AdminToken>("Sistemde Böyle Bir Mail Adresi Bulunamamıştır.!");
+                return new ErrorDataResult<UserToken>("Sistemde Böyle Bir Mail Adresi Bulunamamıştır.!");
 
             //if (!user.IsConfirm)
             //    return new ErrorDataResult<Token>("Kullanıcı maili onaylanmamış!");
@@ -41,20 +42,18 @@ namespace Business.Authentication
 
             if (result)
             {
-                AdminToken token = new();
+                UserToken token = new();
                 token = _tokenHandler.CreateUserToken(user, operationClaims);
-                return new SuccessDataResult<AdminToken>(token);
+                return new SuccessDataResult<UserToken>(token);
             }
-            return new ErrorDataResult<AdminToken>("Kullanıcı Adı veya Şifreniz Hatalı.!");
+            return new ErrorDataResult<UserToken>("Kullanıcı Adı veya Şifreniz Hatalı.!");
         }
 
         [ValidationAspect(typeof(AuthValidator))]
         public async Task<IResult> Register(RegisterAuthDto registerDto)
         {
             IResult result = BusinessRules.Run(
-                await CheckIfEmailExists(registerDto.Email),
-                CheckIfImageExtesionsAllow(registerDto.Image.FileName),
-                CheckIfImageSizeIsLessThanOneMb(registerDto.Image.Length)
+                await CheckIfEmailExists(registerDto.Email)
                 );
 
             if (result != null)
@@ -76,27 +75,27 @@ namespace Business.Authentication
             return new SuccessResult();
         }
 
-        private IResult CheckIfImageSizeIsLessThanOneMb(long imgSize)
-        {
-            decimal imgMbSize = Convert.ToDecimal(imgSize * 0.000001);
-            if (imgMbSize > 1)
-            {
-                return new ErrorResult("Yüklediğiniz resmi boyutu en fazla 1mb olmalıdır");
-            }
-            return new SuccessResult();
-        }
+        //private IResult CheckIfImageSizeIsLessThanOneMb(long imgSize)
+        //{
+        //    decimal imgMbSize = Convert.ToDecimal(imgSize * 0.000001);
+        //    if (imgMbSize > 1)
+        //    {
+        //        return new ErrorResult("Yüklediğiniz resmi boyutu en fazla 1mb olmalıdır");
+        //    }
+        //    return new SuccessResult();
+        //}
 
-        private IResult CheckIfImageExtesionsAllow(string fileName)
-        {
-            var ext = fileName.Substring(fileName.LastIndexOf('.'));
-            var extension = ext.ToLower();
-            List<string> AllowFileExtensions = new List<string> { ".jpg", ".jpeg", ".gif", ".png" };
-            if (!AllowFileExtensions.Contains(extension))
-            {
-                return new ErrorResult("Eklediğiniz resim .jpg, .jpeg, .gif, .png türlerinden biri olmalıdır!");
-            }
-            return new SuccessResult();
-        }
+        //private IResult CheckIfImageExtesionsAllow(string fileName)
+        //{
+        //    var ext = fileName.Substring(fileName.LastIndexOf('.'));
+        //    var extension = ext.ToLower();
+        //    List<string> AllowFileExtensions = new List<string> { ".jpg", ".jpeg", ".gif", ".png" };
+        //    if (!AllowFileExtensions.Contains(extension))
+        //    {
+        //        return new ErrorResult("Eklediğiniz resim .jpg, .jpeg, .gif, .png türlerinden biri olmalıdır!");
+        //    }
+        //    return new SuccessResult();
+        //}
 
         public async Task<IDataResult<CustomerToken>> CustomerLogin(CustomerLoginDto customerLoginDto)
         {
@@ -108,12 +107,12 @@ namespace Business.Authentication
             //    return new ErrorDataResult<Token>("Kullanıcı maili onaylanmamış!");
 
             var result = HashingHelper.VerifyPasswordHash(customerLoginDto.Password, customerUser.PasswordHash, customerUser.PasswordSalt);
-
+            List<OperationClaim> operationClaims = await _customerService.GetCustomerOperationClaims(customerUser.Id);
 
             if (result)
             {
                 CustomerToken token = new CustomerToken();
-                token = _tokenHandler.CreateCustomerUserToken(customerUser);
+                token = _tokenHandler.CreateCustomerUserToken(customerUser,operationClaims);
                 return new SuccessDataResult<CustomerToken>(token);
             }
             return new ErrorDataResult<CustomerToken>("Kullanıcı Adı veya Şifreniz Hatalı.!");

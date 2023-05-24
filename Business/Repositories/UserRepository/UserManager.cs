@@ -10,6 +10,7 @@ using Core.Utilities.Business;
 using Core.Utilities.Hashing;
 using Core.Utilities.Result.Abstract;
 using Core.Utilities.Result.Concrete;
+using DataAccess.Repositories.UserOperationClaimRepository;
 using DataAccess.Repositories.UserRepository;
 using Entities.Concrete;
 using Entities.Dtos;
@@ -21,12 +22,14 @@ namespace Business.Repositories.UserRepository
         private readonly IUserDal _userDal;
         private readonly IFileService _fileService;
         private readonly IEmailParameterService _emailParameterService;
+        private readonly IUserOperationClaimDal _userOperationClaimDal;
 
-        public UserManager(IUserDal userDal, IFileService fileService, IEmailParameterService emailParameterService)
+        public UserManager(IUserDal userDal, IFileService fileService, IEmailParameterService emailParameterService, IUserOperationClaimDal userOperationClaimDal = null)
         {
             _userDal = userDal;
             _fileService = fileService;
             _emailParameterService = emailParameterService;
+            _userOperationClaimDal = userOperationClaimDal;
         }
 
 
@@ -34,13 +37,9 @@ namespace Business.Repositories.UserRepository
         [RemoveCacheAspect("IUserService.Get")]
         public async Task Add(RegisterAuthDto registerDto)
         {
-            string fileName = _fileService.FileSaveToServer(registerDto.Image, "./Content/Img/");
-            //string fileName = _fileService.FileSaveToFtp(registerDto.Image); 
-            //byte[] fileByteArray = _fileService.FileConvertByteArrayToDatabase(registerDto.Image);
-
             string confirmValue = await CreateConfirmValue();
 
-            var user = CreateUser(registerDto, fileName);
+            var user = CreateUser(registerDto);
 
             user.ConfirmValue = confirmValue;
 
@@ -66,7 +65,7 @@ namespace Business.Repositories.UserRepository
         //****************************************//
 
         // Kullanıcıyı Oluştur
-        private static User CreateUser(RegisterAuthDto registerDto, string fileName)
+        private static User CreateUser(RegisterAuthDto registerDto)
         {
             byte[] passwordHash, paswordSalt;
             HashingHelper.CreatePassword(registerDto.Password, out passwordHash, out paswordSalt);
@@ -77,7 +76,6 @@ namespace Business.Repositories.UserRepository
             user.Name = registerDto.Name;
             user.PasswordHash = passwordHash;
             user.PasswordSalt = paswordSalt;
-            user.ImageUrl = fileName;
             return user;
         }
         //****************************************//
@@ -91,7 +89,7 @@ namespace Business.Repositories.UserRepository
         //****************************************//
 
         // Kullanıcıyı Güncelle
-        [SecuredAspect()]
+        [SecuredAspect("Admin,Kullanıcı")]
         [ValidationAspect(typeof(UserValidator))]
         [RemoveCacheAspect("IUserService.Get")]
         public async Task<IResult> Update(User user)
@@ -106,15 +104,23 @@ namespace Business.Repositories.UserRepository
         [RemoveCacheAspect("IUserService.Get")]
         public async Task<IResult> Delete(User user)
         {
+            IResult result = BusinessRules.Run(
+               await CheckIfUserExistToUserClaims(user.Id)
+               );
+            if (result != null)
+            {
+                return result;
+            }
+
             await _userDal.Delete(user);
             return new SuccessResult(UserMessages.DeletedUser);
         }
         //****************************************//
 
         // Kullanıcıları Listele
-        [SecuredAspect()]
-        [CacheAspect(60)]
-        [PerformanceAspect(3)]
+        [SecuredAspect("Admin,Müşteri")]
+        [CacheAspect()]
+        [PerformanceAspect()]
         public async Task<IDataResult<List<User>>> GetList()
         {
             return new SuccessDataResult<List<User>>(await _userDal.GetAll());
@@ -339,5 +345,15 @@ namespace Business.Repositories.UserRepository
             return new SuccessResult(UserMessages.ConfirmUserMailSendSuccessiful);
         }
         //****************************************//
+
+        public async Task<IResult> CheckIfUserExistToUserClaims(int userId)
+        {
+            var result = await _userOperationClaimDal.Get(x=>x.UserId == userId);
+            if (result!=null)
+            {
+                return new ErrorResult("Silmeye Çalıştığınız Kullanıcının Yetkisi Bulunuyor.!");
+            }
+            return new SuccessResult();
+        }
     }
 }

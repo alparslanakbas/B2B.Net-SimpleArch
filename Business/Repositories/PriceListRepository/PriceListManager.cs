@@ -28,7 +28,7 @@ namespace Business.Repositories.PriceListRepository
 
 
         // Fiyat Listesi Ekle
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         [ValidationAspect(typeof(PriceListValidator))]
         [RemoveCacheAspect("IPriceListService.Get")]
         public async Task<IResult> Add(PriceList priceList)
@@ -39,7 +39,7 @@ namespace Business.Repositories.PriceListRepository
         //****************************************//
 
         // Fiyat Listesi Güncelle
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         [ValidationAspect(typeof(PriceListValidator))]
         [RemoveCacheAspect("IPriceListService.Get")]
         public async Task<IResult> Update(PriceList priceList)
@@ -50,7 +50,7 @@ namespace Business.Repositories.PriceListRepository
         //****************************************//
 
         // Fiyat Listesi Sil
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         [RemoveCacheAspect("IPriceListService.Get")]
         public async Task<IResult> Delete(PriceList priceList)
         {
@@ -60,7 +60,7 @@ namespace Business.Repositories.PriceListRepository
         //****************************************//
 
         // Fiyat Listelerini Listele
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         [CacheAspect()]
         [PerformanceAspect()]
         public async Task<IDataResult<List<PriceList>>> GetList()
@@ -70,7 +70,7 @@ namespace Business.Repositories.PriceListRepository
         //****************************************//
 
         // Fiyat Listelerini Id'ye Göre Listele
-        [SecuredAspect()]
+        [SecuredAspect("Admin,Müşteri")]
         [CacheAspect()]
         public async Task<IDataResult<PriceList>> GetById(int id)
         {

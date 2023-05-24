@@ -30,7 +30,7 @@ namespace Business.Repositories.OrderDetailRepository
 
 
         // Sipariş Bilgisi Ekle
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         [ValidationAspect(typeof(OrderDetailValidator))]
         [RemoveCacheAspect("IOrderDetailService.Get")]
         public async Task<IResult> Add(OrderDetail orderDetail)
@@ -41,7 +41,7 @@ namespace Business.Repositories.OrderDetailRepository
         //****************************************//
 
         // Sipariş Bilgisi Güncelle
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         [ValidationAspect(typeof(OrderDetailValidator))]
         [RemoveCacheAspect("IOrderDetailService.Get")]
 
@@ -53,7 +53,7 @@ namespace Business.Repositories.OrderDetailRepository
         //****************************************//
 
         // Sipariş Bilgisi Sil
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         [RemoveCacheAspect("IOrderDetailService.Get")]
 
         public async Task<IResult> Delete(OrderDetail orderDetail)
@@ -64,7 +64,7 @@ namespace Business.Repositories.OrderDetailRepository
         //****************************************//
 
         // Sipariş Bilgilerini Listele
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         [CacheAspect()]
         [PerformanceAspect()]
         public async Task<IDataResult<List<OrderDetail>>> GetList(int orderId)
@@ -74,7 +74,7 @@ namespace Business.Repositories.OrderDetailRepository
         //****************************************//
 
         // Sipariş Bilgilerini Id'ye Göre Getir
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         public async Task<IDataResult<OrderDetail>> GetById(int id)
         {
             return new SuccessDataResult<OrderDetail>(await _orderDetailDal.Get(p => p.Id == id));
@@ -83,14 +83,14 @@ namespace Business.Repositories.OrderDetailRepository
 
 
         // İlgili Ürüne Ait Tüm Sipariş Detaylarını Getir
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         public async Task<List<OrderDetail>> GetListByProductId(int productId)
         {
             return await _orderDetailDal.GetAll(x=>x.ProductId==productId);
         }
 
         // Sipariş Detaylarına Ürün Adını Getirme
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         public async Task<IDataResult<List<OrderDetailListDto>>> GetListProductOrderDetail(int orderId)
         {
             return new SuccessDataResult<List<OrderDetailListDto>>(await _orderDetailDal.GetListOrderDetailsDto(orderId));

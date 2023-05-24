@@ -18,5 +18,6 @@ namespace Business.Repositories.CustomerRepository
         Task<IDataResult<Customer>> GetById(int id);
         Task<IDataResult<CustomerListDto>> GetByCustomerDto(int id);
         Task<Customer> GetByEmail(string email);
+        Task<List<OperationClaim>> GetCustomerOperationClaims(int customerId);
     }
 }

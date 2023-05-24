@@ -28,7 +28,7 @@ namespace Business.Repositories.CustomerRelationshipRepository
 
 
         // Müşteri Etkileşimi Ekle
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri,Kullanıcı")]
         [ValidationAspect(typeof(CustomerRelationshipValidator))]
         [RemoveCacheAspect("ICustomerRelationshipService.Get")]
         public async Task<IResult> Add(CustomerRelationship customerRelationship)
@@ -39,7 +39,7 @@ namespace Business.Repositories.CustomerRelationshipRepository
         //****************************************//
 
         // Müşteri Etkileşimi Güncelle
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri,Kullanıcı")]
         [ValidationAspect(typeof(CustomerRelationshipValidator))]
         [RemoveCacheAspect("ICustomerRelationshipService.Get")]
         [RemoveCacheAspect("ICustomerService.Get")]
@@ -61,7 +61,7 @@ namespace Business.Repositories.CustomerRelationshipRepository
         //****************************************//
 
         // Müşteri Etkileşimi Sil
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri,Kullanıcı")]
         [RemoveCacheAspect("ICustomerRelationshipService.Get")]
         public async Task<IResult> Delete(CustomerRelationship customerRelationship)
         {
@@ -71,7 +71,7 @@ namespace Business.Repositories.CustomerRelationshipRepository
         //****************************************//
 
         // Müşteri Etkileşimlerini Listele
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri,Kullanıcı")]
         [CacheAspect()]
         [PerformanceAspect()]
         public async Task<IDataResult<List<CustomerRelationship>>> GetList()
@@ -81,12 +81,14 @@ namespace Business.Repositories.CustomerRelationshipRepository
         //****************************************//
 
         // Müşteri Etkileşimlerini Id'ye Göre Getir
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri,Kullanıcı")]
         public async Task<IDataResult<CustomerRelationship>> GetById(int id)
         {
             return new SuccessDataResult<CustomerRelationship>(await _customerRelationshipDal.Get(p => p.Id == id));
         }
 
+
+        [SecuredAspect("Admin,Müşteri,Kullanıcı")]
         public async Task<IDataResult<CustomerRelationship>> GetByCustomerId(int customerId)
         {
             return new SuccessDataResult<CustomerRelationship>(await _customerRelationshipDal.Get(p => p.CustomerId == customerId));

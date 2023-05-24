@@ -7,12 +7,10 @@ using System.Threading.Tasks;
 
 namespace Entities.Dtos
 {
-    public class CustomerListDto:Customer
+    public class CustomerOperationClaimListDto:CustomerOperationClaim
     {
-        public int? PriceListId { get; set; }
-        public string? PriceListName { get; set; }
-        public decimal? Discount { get; set; }
-        public int OperationClaimId { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerEmail { get; set; }
         public string OperationClaimName { get; set; }
     }
 }

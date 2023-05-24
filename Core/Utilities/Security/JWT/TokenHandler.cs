@@ -17,9 +17,9 @@ namespace Core.Utilities.Security.JWT
         {
             Configuration = configuration;
         }
-        public AdminToken CreateUserToken(User user, List<OperationClaim> operationClaims)
+        public UserToken CreateUserToken(User user, List<OperationClaim> operationClaims)
         {
-            AdminToken token = new AdminToken();
+            UserToken token = new UserToken();
 
             //Security Key'in simetriğini alalım
             SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Token:SecurityKey"]));
@@ -42,7 +42,7 @@ namespace Core.Utilities.Security.JWT
             JwtSecurityTokenHandler jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
 
             //Token üretelim
-            token.AdminAccessToken = jwtSecurityTokenHandler.WriteToken(securityToken);
+            token.UserAccessToken = jwtSecurityTokenHandler.WriteToken(securityToken);
 
             //Refresh token üretelim
             token.RefreshToken = CreateRefreshToken();
@@ -68,16 +68,17 @@ namespace Core.Utilities.Security.JWT
             return claims;
         }
 
-        private IEnumerable<Claim> SetCustomerClaims(Customer customer)
+        private IEnumerable<Claim> SetCustomerClaims(Customer customer, List<OperationClaim> operationClaims)
         {
             var claims = new List<Claim>();
             claims.AddId(customer.Id.ToString());
             claims.AddName(customer.Name);
+            claims.AddRoles(operationClaims.Select(x => x.Name).ToArray());
             return claims;
         }
 
 
-        public CustomerToken CreateCustomerUserToken(Customer customer)
+        public CustomerToken CreateCustomerUserToken(Customer customer, List<OperationClaim> operationClaims)
         {
              CustomerToken token = new CustomerToken();
 
@@ -93,7 +94,7 @@ namespace Core.Utilities.Security.JWT
                 issuer: Configuration["Token:Issuer"],
                 audience: Configuration["Token:Audience"],
                 expires: token.Expiration,
-                claims: SetCustomerClaims(customer),
+                claims: SetCustomerClaims(customer,operationClaims),
                 notBefore: DateTime.Now,
                 signingCredentials: signingCredentials
                 );

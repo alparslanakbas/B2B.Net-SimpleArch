@@ -42,7 +42,7 @@ namespace Business.Repositories.ProductRepository
 
 
         // Ürün Ekle
-        [SecuredAspect("Admin,Product.add")]
+        [SecuredAspect("Admin,Müşteri")]
         [ValidationAspect(typeof(ProductValidator))]
         [RemoveCacheAspect("IProductService.Get")]
         public async Task<IResult> Add(Product product)
@@ -53,7 +53,7 @@ namespace Business.Repositories.ProductRepository
         //****************************************//
 
         // Ürün Güncelle
-        [SecuredAspect("Admin,Product.update")]
+        [SecuredAspect("Admin,Müşteri")]
         [ValidationAspect(typeof(ProductValidator))]
         [RemoveCacheAspect("IProductService.Get")]
         public async Task<IResult> Update(Product product)
@@ -64,7 +64,7 @@ namespace Business.Repositories.ProductRepository
         //****************************************//
 
         // Ürün Sil
-        [SecuredAspect("Admin,Product.delete")]
+        [SecuredAspect("Admin,Müşteri")]
         [RemoveCacheAspect("IProductService.Get")]
         public async Task<IResult> Delete(Product product)
         {
@@ -96,7 +96,7 @@ namespace Business.Repositories.ProductRepository
         //****************************************//
 
         // Ürünleri Listele
-        [SecuredAspect("Admin,Product.get")]
+        [SecuredAspect("Admin,Müşteri,Kullanıcı")]
         [CacheAspect()]
         [PerformanceAspect()]
         public async Task<IDataResult<List<ProductListDto>>> GetList()
@@ -106,7 +106,7 @@ namespace Business.Repositories.ProductRepository
         //****************************************//
 
         // Ürünleri Id'ye Göre Listele
-        [SecuredAspect("Admin,Product.get")]
+        [SecuredAspect("Admin,Müşteri,Kullanıcı")]
         public async Task<IDataResult<Product>> GetById(int id)
         {
             return new SuccessDataResult<Product>(await _productDal.Get(p => p.Id == id));
@@ -115,7 +115,7 @@ namespace Business.Repositories.ProductRepository
         //****************************************//
 
         // Ürün Listesini Müşteriye Göre Getir
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri,Kullanıcı")]
         [PerformanceAspect()]
         public async Task<IDataResult<List<ProductListDto>>> GetProductList(int customerId)
         {
@@ -126,6 +126,7 @@ namespace Business.Repositories.ProductRepository
 
 
         // Ürün Silerken Sepette Olup Olmadığının Kontrolü Eğer Sepette Varsa Silinmez
+        [SecuredAspect("Admin,Müşteri")]
         public async Task <IResult>  CheckIfProductExistToBaskets(int productId)
         {
             var result = await _basketService.GetListByProductId(productId);
@@ -139,6 +140,7 @@ namespace Business.Repositories.ProductRepository
 
 
         // Ürün Silerken Siparişte Olup Olmadığının Kontrolü Eğer Siparişte Varsa Silinmez
+        [SecuredAspect("Admin,Müşteri")]
         public async Task <IResult>  CheckIfProductExistToOrderDetails(int productId)
         {
             var result = await _orderDetailService.GetListByProductId(productId);

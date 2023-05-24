@@ -37,7 +37,7 @@ namespace Business.Repositories.CustomerRepository
 
 
         // Müşteri Ekle
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         [ValidationAspect(typeof(CustomerValidator))]
         [RemoveCacheAspect("ICustomerService.Get")]
         public async Task<IResult> Add(CustomerRegisterDto request)
@@ -66,7 +66,7 @@ namespace Business.Repositories.CustomerRepository
         //****************************************//
 
         // Müşteri Güncelle
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         [ValidationAspect(typeof(CustomerValidator))]
         [RemoveCacheAspect("ICustomerService.Get")]
         public async Task<IResult> Update(Customer request)
@@ -82,7 +82,7 @@ namespace Business.Repositories.CustomerRepository
         //****************************************//
 
         // Müşteri Sil
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         [RemoveCacheAspect("ICustomerService.Get")]
         public async Task<IResult> Delete(Customer request)
         {
@@ -104,7 +104,7 @@ namespace Business.Repositories.CustomerRepository
         //****************************************//
 
         // Müşterileri Listele
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         [CacheAspect()]
         [PerformanceAspect()]
         public async Task<IDataResult<List<CustomerListDto>>> GetList()
@@ -114,12 +114,13 @@ namespace Business.Repositories.CustomerRepository
         //****************************************//
 
         // Müşterileri Id'ye Göre Getir
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         public async Task<IDataResult<Customer>> GetById(int id)
         {
             return new SuccessDataResult<Customer>(await _customerDal.Get(p => p.Id == id));
         }
         //****************************************//
+
 
         // Müşterileri Mail Adresine Göre Getir
         public async Task<Customer> GetByEmail(string email)
@@ -156,10 +157,16 @@ namespace Business.Repositories.CustomerRepository
 
 
         // Müşterileri Dto daki Proplara Göre Getir
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         public async Task<IDataResult<CustomerListDto>> GetByCustomerDto(int id)
         {
             return new SuccessDataResult<CustomerListDto>(await _customerDal.GetDto(id));
+        }
+
+        // Müşterinin İzinlerini Geitr
+        public async Task<List<OperationClaim>> GetCustomerOperationClaims(int customerId)
+        {
+           return await _customerDal.GetCustomerOperatinonClaims(customerId);
         }
     }
 }

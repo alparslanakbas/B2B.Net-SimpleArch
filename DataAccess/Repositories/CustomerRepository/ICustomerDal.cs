@@ -13,5 +13,6 @@ namespace DataAccess.Repositories.CustomerRepository
     {
         Task<List<CustomerListDto>> GetListDto();
         Task<CustomerListDto> GetDto(int id);
+        Task<List<OperationClaim>> GetCustomerOperatinonClaims(int customerIdId);
     }
 }

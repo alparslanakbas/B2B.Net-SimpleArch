@@ -35,7 +35,7 @@ namespace Business.Repositories.OrderRepository
 
 
         // Sipariş Ekle
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri,Kullanıcı")]
         [ValidationAspect(typeof(OrderValidator))]
         [RemoveCacheAspect("IOrderService.Get")]
         public async Task<IResult> Add(int customerId)
@@ -76,7 +76,7 @@ namespace Business.Repositories.OrderRepository
         //****************************************//
 
         // Sipariş Güncelle
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         [ValidationAspect(typeof(OrderValidator))]
         [RemoveCacheAspect("IOrderService.Get")]
         public async Task<IResult> Update(Order order)
@@ -87,7 +87,7 @@ namespace Business.Repositories.OrderRepository
         //****************************************//
 
         // Sipariş Sil
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         [RemoveCacheAspect("IOrderService.Get")]
         public async Task<IResult> Delete(Order order)
         {
@@ -102,7 +102,7 @@ namespace Business.Repositories.OrderRepository
         //****************************************//
 
         // Siparişleri Listele
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         [CacheAspect()]
         [PerformanceAspect()]
         public async Task<IDataResult<List<Order>>> GetList()
@@ -112,7 +112,7 @@ namespace Business.Repositories.OrderRepository
         //****************************************//
 
         // Siparişleri Id'ye Göre Listele
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         [CacheAspect()]
         public async Task<IDataResult<Order>> GetById(int id)
         {
@@ -121,7 +121,7 @@ namespace Business.Repositories.OrderRepository
         //****************************************//
 
         // Siparişleri Müşteri Id'sine Göre Listele
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         [CacheAspect()]
         [PerformanceAspect()]
         public async Task<IDataResult<List<Order>>> GetListByCustomerId(int customerId)
@@ -130,7 +130,7 @@ namespace Business.Repositories.OrderRepository
         }
 
 
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri")]
         [CacheAspect()]
         [PerformanceAspect()]
         public async Task<IDataResult<List<OrderListDto>>> GetListWithOrderDto()

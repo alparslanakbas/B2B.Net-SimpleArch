@@ -28,7 +28,7 @@ namespace Business.Repositories.BasketRepository
         }
 
         // Sepete Ürün Ekle
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri,Kullanıcı")]
         [ValidationAspect(typeof(BasketValidator))]
         [RemoveCacheAspect("IBasketService.Get")]
         public async Task<IResult> Add(Basket basket)
@@ -39,7 +39,7 @@ namespace Business.Repositories.BasketRepository
         //****************************************//
 
         // Sepetteki Ürünleri Güncelle
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri,Kullanıcı")]
         [ValidationAspect(typeof(BasketValidator))]
         [RemoveCacheAspect("IBasketService.Get")]
         public async Task<IResult> Update(Basket basket)
@@ -50,7 +50,7 @@ namespace Business.Repositories.BasketRepository
         //****************************************//
 
         // Sepetteki Ürünleri Sil
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri,Kullanıcı")]
         [RemoveCacheAspect("IBasketService.Get")]
         public async Task<IResult> Delete(Basket basket)
         {
@@ -60,7 +60,7 @@ namespace Business.Repositories.BasketRepository
         //****************************************//
 
         // Sepetteki Ürünleri Listele
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri,Kullanıcı")]
         [CacheAspect()]
         [PerformanceAspect()]
         public async Task<IDataResult<List<Basket>>> GetList()
@@ -70,7 +70,7 @@ namespace Business.Repositories.BasketRepository
         //****************************************//
 
         // Sepetteki Ürünleri Id'ye Göre Getir
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri,Kullanıcı")]
         [CacheAspect()]
         public async Task<IDataResult<Basket>> GetById(int id)
         {
@@ -80,7 +80,7 @@ namespace Business.Repositories.BasketRepository
 
 
         // Sepetteki Ürünlerini Müşteri Id'ye Özel Listele
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri,Kullanıcı")]
         [CacheAspect()]
         public async Task<IDataResult<List<BasketListDto>>> GetListByCustomerId(int customerId)
         {
@@ -90,7 +90,7 @@ namespace Business.Repositories.BasketRepository
 
 
         //Sepetteki Ürünleri Ürün Id'ye Göre Listele
-        [SecuredAspect("Admin")]
+        [SecuredAspect("Admin,Müşteri,Kullanıcı")]
         [CacheAspect()]
         public async Task<List<Basket>> GetListByProductId(int productId)
         {
